@@ -1,5 +1,5 @@
 {
-  "name": "serverless-rest-endpoint",
+  "name": "create-orders-endpoint",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
