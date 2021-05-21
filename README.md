@@ -22,4 +22,6 @@ npm test
 * e2e testing
 * deeper unit testing coverage
 * add dynamo read validation
-
+* rename this repo to `orders-api`
+* add `GET /orders/{id}`
+* hook up dynamo streams
