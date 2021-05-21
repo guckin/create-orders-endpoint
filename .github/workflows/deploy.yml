@@ -28,4 +28,4 @@ jobs:
 
       - name: Deploy
         run: |
-          sam deploy --no-confirm-changeset --image-repository ${{ secrets.ECR_REPO_URL }}
+          sam deploy --no-confirm-changeset
