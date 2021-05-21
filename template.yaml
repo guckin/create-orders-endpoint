@@ -65,3 +65,6 @@ Outputs:
   CreateOrdersFunctionIamRole:
     Description: "Implicit IAM Role created for function"
     Value: !GetAtt CreateOrdersFunctionRole.Arn
+  TableArn:
+    Description: "Table ARN"
+    Value: !GetAtt Table.Arn

@@ -67,7 +67,6 @@ function errorInternalServerError() {
     });
 }
 
-
 interface Response {
     json: Json,
     status: number
