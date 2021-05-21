@@ -3,16 +3,16 @@ import {failureFrom, Result, successFrom} from '../utilities/result';
 import {inspect} from 'util';
 import {DocumentClient} from 'aws-sdk/clients/dynamodb';
 
-export interface CreateOrderDependencies {
+export interface StoreOrderDependencies {
     readonly dynamo: Pick<DocumentClient, 'put'>;
     readonly tableName: string;
 }
 
-export type CreateOrderHandler = (order: Order) => Promise<Result<void, CreateOrderFailure>>;
+export type StoreOrderHandler = (order: Order) => Promise<Result<void, StoreOrderFailure>>;
 
-export function createOrderHandlerFactory({dynamo, tableName}: CreateOrderDependencies): CreateOrderHandler {
+export function storeOrderHandlerFactory({dynamo, tableName}: StoreOrderDependencies): StoreOrderHandler {
     return async order => {
-        console.log('Creating Order:', inspect(order, { depth: 50 }));
+        console.log('Storing Order:', inspect(order, { depth: 50 }));
         try {
             await dynamo.put({
                 Item: order,
@@ -21,13 +21,13 @@ export function createOrderHandlerFactory({dynamo, tableName}: CreateOrderDepend
             return successFrom(undefined);
         } catch (error) {
             console.error('🚨 ERROR 🚨', '----', error);
-            return failureFrom(CreateOrderFailure.Unknown);
+            return failureFrom(StoreOrderFailure.Unknown);
         }
     }
 }
 
-export const CreateOrderFailure = {
+export const StoreOrderFailure = {
     Unknown: 'Unknown'
 } as const;
 
-export type CreateOrderFailure = typeof CreateOrderFailure[keyof typeof CreateOrderFailure];
+export type StoreOrderFailure = typeof StoreOrderFailure[keyof typeof StoreOrderFailure];

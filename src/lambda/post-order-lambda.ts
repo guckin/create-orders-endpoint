@@ -1,20 +1,20 @@
 import {APIGatewayProxyHandlerV2} from 'aws-lambda';
-import {Json, parseJson} from './utilities/json';
+import {Json, parseJson} from '../utilities/json';
 import {APIGatewayProxyResultV2} from 'aws-lambda/trigger/api-gateway-proxy';
-import {CreateOrderHandler} from './orders/create-order';
-import {MutableOrderField, Order} from './orders/order';
+import {StoreOrderHandler} from '../orders/create-order';
+import {MutableOrderField, Order} from '../orders/order';
 import {object, string, array} from 'joi';
-import {isSuccess} from './utilities/result';
-import {UUID} from './common/uuid';
-import {ISO8601DateTimeString} from './common/date-time';
+import {isSuccess} from '../utilities/result';
+import {UUID} from '../common/uuid';
+import {ISO8601DateTimeString} from '../common/date-time';
 
-export interface HandlerDependencies {
-    readonly createOrder: CreateOrderHandler;
+export interface PostOrderLambdaDependencies {
+    readonly storeOrder: StoreOrderHandler;
     readonly uuid: () => UUID;
     readonly now: () => ISO8601DateTimeString;
 }
 
-export function createHandler({createOrder, uuid, now}: HandlerDependencies): APIGatewayProxyHandlerV2 {
+export function postOrderLambdaFactory({storeOrder, uuid, now}: PostOrderLambdaDependencies): APIGatewayProxyHandlerV2 {
     return async ({body}) => {
         const result = parseJson(body)
         if (!isSuccess(result)) return errorPayloadIsNotJson(body);
@@ -24,13 +24,17 @@ export function createHandler({createOrder, uuid, now}: HandlerDependencies): AP
             createdWhen: now(),
             ...result.value
         };
-        const createOrderResult = await createOrder(order);
+        const createOrderResult = await storeOrder(order);
         if(!isSuccess(createOrderResult)) return errorInternalServerError();
-        return createResponse({
-            status: 201,
-            json: order
-        });
+        return successfullyCreatedOrder(order);
     }
+}
+
+function successfullyCreatedOrder(order: Order): APIGatewayProxyResultV2 {
+    return createResponse({
+        status: 201,
+        json: order
+    });
 }
 
 function errorPayloadIsNotJson(payload: unknown): APIGatewayProxyResultV2 {
@@ -58,7 +62,7 @@ function errorPayloadIsInvalid(payload: Json): APIGatewayProxyResultV2 {
     });
 }
 
-function errorInternalServerError() {
+function errorInternalServerError(): APIGatewayProxyResultV2 {
     return createResponse({
         json: {
             message: 'Internal Server Error',
