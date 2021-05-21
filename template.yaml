@@ -28,6 +28,8 @@ Resources:
             TableName: !Ref TableName
       PackageType: Image
       ImageUri: ECR URL
+      ImageConfig:
+        Command: "lambda.handler"
       Events:
         Api:
           Type: Api
