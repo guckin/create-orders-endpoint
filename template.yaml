@@ -46,6 +46,7 @@ Resources:
 
   GetOrderFunction:
     Type: AWS::Serverless::Function
+    DependsOn: CreateOrdersFunction
     Properties:
       Policies:
         - DynamoDBCrudPolicy:
