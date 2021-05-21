@@ -1,0 +1,42 @@
+{
+  "info": {
+    "_postman_id": "ad82cef2-282a-471e-b07c-e08921067fb0",
+    "name": "store front",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "create order",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"items\": [\n        \"12679f29-2c7c-4a19-a337-f41af72d563d\"\n    ]\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "https://x9bca13x29.execute-api.us-west-2.amazonaws.com/Prod/orders",
+          "protocol": "https",
+          "host": [
+            "x9bca13x29",
+            "execute-api",
+            "us-west-2",
+            "amazonaws",
+            "com"
+          ],
+          "path": [
+            "Prod",
+            "orders"
+          ]
+        },
+        "description": "test"
+      },
+      "response": []
+    }
+  ]
+}
