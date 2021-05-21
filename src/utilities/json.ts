@@ -1,11 +1,10 @@
-import {failureFrom, Result} from './result';
+import {failureFrom, Result, successFrom} from './result';
 
 export function parseJson(value: unknown): Result<Json, InvalidJsonError> {
     try {
-        if (typeof value === 'string') {
-            return JSON.parse(value as string);
-        }
-        return failureFrom(InvalidJsonError);
+        return typeof value === 'string' ?
+            successFrom(JSON.parse(value)) :
+            failureFrom(InvalidJsonError);
     } catch (error) {
         return failureFrom(InvalidJsonError);
     }
