@@ -1,11 +1,11 @@
 export interface Success<T> {
-    _type_: 'Success';
-    value: T;
+    readonly _type_: 'Success';
+    readonly value: T;
 }
 
 export interface Failure<E> {
-    _type_: 'Failure';
-    error: E;
+    readonly _type_: 'Failure';
+    readonly error: E;
 }
 
 export type Result<T, E> = Success<T> | Failure<E>;

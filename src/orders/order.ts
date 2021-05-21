@@ -2,9 +2,9 @@ import {UUID} from '../common/uuid';
 import {ISO8601DateTimeString} from '../common/date-time';
 
 export interface Order {
-    id: UUID;
-    createdWhen: ISO8601DateTimeString;
-    items: UUID[];
+    readonly id: UUID;
+    readonly createdWhen: ISO8601DateTimeString;
+    readonly items: UUID[];
 }
 
 export type MutableOrderField = 'items';

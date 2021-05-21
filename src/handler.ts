@@ -8,10 +8,10 @@ import {isSuccess} from './utilities/result';
 import {UUID} from './common/uuid';
 import {ISO8601DateTimeString} from './common/date-time';
 
-interface HandlerDependencies {
-    createOrder: CreateOrderHandler;
-    uuid: () => UUID;
-    now: () => ISO8601DateTimeString;
+export interface HandlerDependencies {
+    readonly createOrder: CreateOrderHandler;
+    readonly uuid: () => UUID;
+    readonly now: () => ISO8601DateTimeString;
 }
 
 export function createHandler({createOrder, uuid, now}: HandlerDependencies): APIGatewayProxyHandlerV2 {
@@ -68,8 +68,8 @@ function errorInternalServerError() {
 }
 
 interface Response {
-    json: Json,
-    status: number
+    readonly json: Json,
+    readonly status: number
 }
 
 function createResponse({json, status}: Response): APIGatewayProxyResultV2 {

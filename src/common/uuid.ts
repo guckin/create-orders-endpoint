@@ -1,1 +1,1 @@
-export type UUID = string & {_brand_: 'UUID'};
+export type UUID = string & {readonly _brand_: 'UUID'};

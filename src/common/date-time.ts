@@ -1,1 +1,1 @@
-export type ISO8601DateTimeString = string & {_brand_: 'ISO8601DateTimeString'};
+export type ISO8601DateTimeString = string & { readonly _brand_: 'ISO8601DateTimeString'};

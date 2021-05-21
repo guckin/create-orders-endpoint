@@ -12,7 +12,7 @@ describe('handler', () => {
     });
 });
 
-function mockHandlerParams(partial: Partial<APIGatewayProxyEventV2> = {}): Parameters<APIGatewayProxyHandlerV2> {
+function stubHandlerParams(partial: Partial<APIGatewayProxyEventV2> = {}): Parameters<APIGatewayProxyHandlerV2> {
     return [
         {...partial},
         undefined,
