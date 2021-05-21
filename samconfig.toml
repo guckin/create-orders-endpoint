@@ -8,6 +8,5 @@ s3_prefix = "create-orders-endpoint"
 region = "us-west-2"
 confirm_changeset = true
 capabilities = "CAPABILITY_IAM"
-profile = "personal"
 parameter_overrides = "TableName=\"orders\""
 image_repositories = ["CreateOrdersFunction=084882962555.dkr.ecr.us-west-2.amazonaws.com/create-orders-endpoint"]
