@@ -1,7 +1,7 @@
 import {APIGatewayProxyHandlerV2} from 'aws-lambda';
 import {Json, parseJson} from '../common/json';
 import {APIGatewayProxyResultV2} from 'aws-lambda/trigger/api-gateway-proxy';
-import {StoreOrderHandler} from '../orders/create-order';
+import {StoreOrderHandler} from '../orders/store-order';
 import {MutableOrderField, Order} from '../orders/order';
 import {object, string, array} from 'joi';
 import {isSuccess} from '../common/result';

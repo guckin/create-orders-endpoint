@@ -1,5 +1,5 @@
 import {postOrderLambdaFactory} from './lambda/post-order-lambda';
-import {storeOrderHandlerFactory} from './orders/create-order';
+import {storeOrderHandlerFactory} from './orders/store-order';
 import {ISO8601DateTimeString} from './common/date-time';
 import {v4} from 'uuid';
 import {UUID} from './common/uuid';

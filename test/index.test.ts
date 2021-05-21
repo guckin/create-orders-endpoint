@@ -1,5 +1,5 @@
 import {APIGatewayProxyEventV2, APIGatewayProxyHandlerV2} from 'aws-lambda';
-import {dynamo, getOrderLambda, postOrderLambda} from '../src';
+import {dynamo, getOrderLambda, postOrderLambda} from '../src/lambdas';
 import {Order} from '../src/orders/order';
 import {UUID} from '../src/common/uuid';
 import {ISO8601DateTimeString} from '../src/common/date-time';
