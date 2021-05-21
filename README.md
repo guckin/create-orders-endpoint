@@ -17,3 +17,9 @@ running tests
 ```
 npm test
 ```
+
+### TODO
+* e2e testing
+* deeper unit testing coverage
+* add dynamo read validation
+

@@ -9,22 +9,54 @@ Globals:
   Function:
     Timeout: 3
 
+Parameters:
+  TableName:
+    Type: String
+    Default: 'orders'
+    Description: Name of the orders table
+    MinLength: 3
+    MaxLength: 50
+    AllowedPattern: ^[A-Za-z_]+$
+    ConstraintDescription: 'Required. Can be characters and underscore only. No numbers or special characters allowed.'
+
 Resources:
   CreateOrdersFunction:
     Type: AWS::Serverless::Function
     Properties:
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: !Ref TableName
       PackageType: Image
       ImageUri: ECR URL
       Events:
         Api:
           Type: Api
           Properties:
-            Path: /hello-world/{id}
-            Method: get
+            Path: /orders
+            Method: post
+      Environment:
+        Variables:
+          TABLE_NAME: !Ref TableName
     Metadata:
       DockerTag: nodejs14.x-v1
       DockerContext: .
       Dockerfile: Dockerfile
+
+  Table:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      AttributeDefinitions:
+        - AttributeName: "id"
+          AttributeType: "S"
+      KeySchema:
+        - AttributeName: "id"
+          KeyType: "HASH"
+      ProvisionedThroughput:
+        ReadCapacityUnits: 5
+        WriteCapacityUnits: 5
+      SSESpecification:
+        SSEEnabled: True
+      TableName: !Ref TableName
 
 Outputs:
   CreateOrdersFunction:
@@ -32,4 +64,4 @@ Outputs:
     Value: !GetAtt CreateOrdersFunction.Arn
   CreateOrdersFunctionIamRole:
     Description: "Implicit IAM Role created for function"
-    Value: !GetAtt CreateOrdersFunction.Arn
+    Value: !GetAtt CreateOrdersFunctionRole.Arn
