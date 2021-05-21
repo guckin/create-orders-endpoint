@@ -20,8 +20,8 @@ npm test
 
 ### TODO
 * e2e testing
-* deeper unit testing coverage
+* deeper unit testing coverage <- Stephen
 * add dynamo read validation
 * rename this repo to `orders-api`
-* add `GET /orders/{id}`
 * hook up dynamo streams
+* add dlq for 500 errors
