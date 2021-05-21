@@ -1,6 +1,5 @@
 import {handler} from '../src/lambda';
 import {APIGatewayProxyEventV2, APIGatewayProxyHandlerV2} from 'aws-lambda';
-import {v4} from 'uuid';
 
 describe('handler', () => {
     it('returns the query params and path parameters`', async () => {
