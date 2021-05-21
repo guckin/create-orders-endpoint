@@ -1,0 +1,97 @@
+{
+  "info": {
+    "_postman_id": "ad82cef2-282a-471e-b07c-e08921067fb0",
+    "name": "Orders API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "/orders",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "var body = JSON.parse(responseBody);",
+              "pm.collectionVariables.set(\"orderId\", body.id);"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"items\": [\n        \"9cb31032-1bec-41ba-80f7-34a0896c95cd\"\n    ]\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{BASE_URL}}/orders",
+          "host": [
+            "{{BASE_URL}}"
+          ],
+          "path": [
+            "orders"
+          ]
+        },
+        "description": "test"
+      },
+      "response": []
+    },
+    {
+      "name": "/orders/{id}",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{BASE_URL}}/orders/{{orderId}}",
+          "host": [
+            "{{BASE_URL}}"
+          ],
+          "path": [
+            "orders",
+            "{{orderId}}"
+          ]
+        },
+        "description": "test"
+      },
+      "response": []
+    }
+  ],
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "exec": [
+          ""
+        ]
+      }
+    },
+    {
+      "listen": "test",
+      "script": {
+        "type": "text/javascript",
+        "exec": [
+          ""
+        ]
+      }
+    }
+  ],
+  "variable": [
+    {
+      "key": "orderId",
+      "value": ""
+    },
+    {
+      "key": "BASE_URL",
+      "value": "https://x9bca13x29.execute-api.us-west-2.amazonaws.com/Prod"
+    }
+  ]
+}
