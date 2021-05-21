@@ -1,5 +1,5 @@
 import {APIGatewayProxyResultV2} from 'aws-lambda/trigger/api-gateway-proxy';
-import {Json} from '../utilities/json';
+import {Json} from '../common/json';
 
 export function errorInternalServerError(): APIGatewayProxyResultV2 {
     return createResponse({

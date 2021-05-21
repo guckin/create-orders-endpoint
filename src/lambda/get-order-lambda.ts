@@ -2,7 +2,7 @@ import {APIGatewayProxyHandlerV2} from 'aws-lambda';
 import {APIGatewayProxyResultV2} from 'aws-lambda/trigger/api-gateway-proxy';
 import {ReadOrderFailure, ReadOrderHandler} from '../orders/read-order';
 import {Order} from '../orders/order';
-import {isSuccess} from '../utilities/result';
+import {isSuccess} from '../common/result';
 import {isUUID} from '../common/uuid';
 import {createResponse, errorInternalServerError} from './common';
 

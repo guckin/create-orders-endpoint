@@ -1,6 +1,5 @@
 import {Order} from './order';
-import {failureFrom, Result, successFrom} from '../utilities/result';
-import {DynamoDB} from 'aws-sdk';
+import {failureFrom, Result, successFrom} from '../common/result';
 import {UUID} from '../common/uuid';
 import {DocumentClient} from 'aws-sdk/clients/dynamodb';
 

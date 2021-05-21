@@ -1,5 +1,5 @@
 import {Order} from './order';
-import {failureFrom, Result, successFrom} from '../utilities/result';
+import {failureFrom, Result, successFrom} from '../common/result';
 import {inspect} from 'util';
 import {DocumentClient} from 'aws-sdk/clients/dynamodb';
 

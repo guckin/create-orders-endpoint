@@ -1,10 +1,10 @@
 import {APIGatewayProxyHandlerV2} from 'aws-lambda';
-import {Json, parseJson} from '../utilities/json';
+import {Json, parseJson} from '../common/json';
 import {APIGatewayProxyResultV2} from 'aws-lambda/trigger/api-gateway-proxy';
 import {StoreOrderHandler} from '../orders/create-order';
 import {MutableOrderField, Order} from '../orders/order';
 import {object, string, array} from 'joi';
-import {isSuccess} from '../utilities/result';
+import {isSuccess} from '../common/result';
 import {UUID} from '../common/uuid';
 import {ISO8601DateTimeString} from '../common/date-time';
 import {createResponse, errorInternalServerError} from './common';
