@@ -7,6 +7,7 @@ import {object, string, array} from 'joi';
 import {isSuccess} from '../utilities/result';
 import {UUID} from '../common/uuid';
 import {ISO8601DateTimeString} from '../common/date-time';
+import {createResponse, errorInternalServerError} from './common';
 
 export interface PostOrderLambdaDependencies {
     readonly storeOrder: StoreOrderHandler;
@@ -39,16 +40,17 @@ function successfullyCreatedOrder(order: Order): APIGatewayProxyResultV2 {
 
 function errorPayloadIsNotJson(payload: unknown): APIGatewayProxyResultV2 {
     return createResponse({
+        status: 400,
         json: {
             message: 'Payload contains invalid json',
             invalidPayload: payload,
-        },
-        status: 400
+        }
     });
 }
 
 function errorPayloadIsInvalid(payload: Json): APIGatewayProxyResultV2 {
     return createResponse({
+        status: 400,
         json: {
             message: 'Payload is invalid',
             invalidPayload: payload,
@@ -57,30 +59,8 @@ function errorPayloadIsInvalid(payload: Json): APIGatewayProxyResultV2 {
                     '12594a47-bacd-408c-bded-0784ced16f7b'
                 ]
             }
-        },
-        status: 400
+        }
     });
-}
-
-function errorInternalServerError(): APIGatewayProxyResultV2 {
-    return createResponse({
-        json: {
-            message: 'Internal Server Error',
-        },
-        status: 500
-    });
-}
-
-interface Response {
-    readonly json: Json,
-    readonly status: number
-}
-
-function createResponse({json, status}: Response): APIGatewayProxyResultV2 {
-    return {
-        body: JSON.stringify(json),
-        statusCode: status
-    };
 }
 
 type CreateOrderPayload = Pick<Order, MutableOrderField>;

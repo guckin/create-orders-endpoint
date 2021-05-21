@@ -29,13 +29,37 @@ Resources:
       PackageType: Image
       ImageUri: ECR URL
       ImageConfig:
-        Command: ["lambda.handler"]
+        Command: ["index.postOrderLambda"]
       Events:
         Api:
           Type: Api
           Properties:
             Path: /orders
             Method: post
+      Environment:
+        Variables:
+          TABLE_NAME: !Ref TableName
+    Metadata:
+      DockerTag: nodejs14.x-v1
+      DockerContext: .
+      Dockerfile: Dockerfile
+
+  GetOrderFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: !Ref TableName
+      PackageType: Image
+      ImageUri: ECR URL
+      ImageConfig:
+        Command: [ "index.getOrderLambda" ]
+      Events:
+        Api:
+          Type: Api
+          Properties:
+            Path: /orders/{id}
+            Method: get
       Environment:
         Variables:
           TABLE_NAME: !Ref TableName
@@ -67,6 +91,12 @@ Outputs:
   CreateOrdersFunctionIamRole:
     Description: "Implicit IAM Role created for function"
     Value: !GetAtt CreateOrdersFunctionRole.Arn
+  GetOrdersFunction:
+    Description: "Function ARN"
+    Value: !GetAtt GetOrderFunction.Arn
+  GetOrdersFunctionIamRole:
+    Description: "Implicit IAM Role created for function"
+    Value: !GetAtt GetOrderFunctionRole.Arn
   TableArn:
     Description: "Table ARN"
     Value: !GetAtt Table.Arn
