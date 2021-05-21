@@ -29,7 +29,7 @@ Resources:
       PackageType: Image
       ImageUri: ECR URL
       ImageConfig:
-        Command: "lambda.handler"
+        Command: ["lambda.handler"]
       Events:
         Api:
           Type: Api
