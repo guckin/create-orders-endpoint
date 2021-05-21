@@ -49,7 +49,7 @@ function errorPayloadIsInvalid(payload: Json): APIGatewayProxyResultV2 {
             message: 'Payload is invalid',
             invalidPayload: payload,
             exampleValidPayload: {
-                item: [
+                items: [
                     '12594a47-bacd-408c-bded-0784ced16f7b'
                 ]
             }
@@ -83,7 +83,7 @@ type CreateOrderPayload = Pick<Order, MutableOrderField>;
 
 function isCreateOrderPayload(payload: unknown): payload is CreateOrderPayload {
     const validation = object({
-        item: array().items(string().uuid()).required()
+        items: array().items(string().uuid()).required()
     });
     const {error} = validation.validate(payload);
     return !error;
