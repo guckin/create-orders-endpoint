@@ -2,6 +2,7 @@ import {Order} from './order';
 import {failureFrom, Result, successFrom} from '../utilities/result';
 import {array, createSerializer, string} from '../dynamo/serialize';
 import {DynamoDB} from 'aws-sdk';
+import {inspect} from 'util';
 
 export interface CreateOrderDependencies {
     readonly dynamo: Pick<DynamoDB, 'putItem'>;
@@ -12,9 +13,12 @@ export type CreateOrderHandler = (order: Order) => Promise<Result<void, CreateOr
 
 export function createOrderHandlerFactory({dynamo, tableName}: CreateOrderDependencies): CreateOrderHandler {
     return async order => {
+        console.log('Creating Order:', inspect(order, { depth: 50 }));
+        const item = serializeOrder(order);
+        console.log('Sending Item to DynamoDB:', inspect(item, { depth: 50 }));
         try {
             await dynamo.putItem({
-                Item: serializeOrder(order),
+                Item: item,
                 TableName: tableName
             }).promise();
             return successFrom(undefined);
