@@ -6,6 +6,7 @@ import {UUID} from './common/uuid';
 import {DocumentClient} from 'aws-sdk/clients/dynamodb';
 import {getOrderLambdaFactory} from './lambda/get-order-lambda';
 import {readOrderHandlerFactory} from './orders/read-order';
+import {ordersFactoryFactory} from './orders/orders-factory';
 
 export const dynamo = new DocumentClient();
 
@@ -16,11 +17,14 @@ const storeOrder = storeOrderHandlerFactory({
 });
 const now = () => new Date().toISOString() as ISO8601DateTimeString;
 const uuid = () => v4() as UUID;
+const ordersFactory = ordersFactoryFactory({
+    now,
+    uuid
+});
 
 export const postOrderLambda = postOrderLambdaFactory({
     storeOrder,
-    now,
-    uuid
+    ordersFactory
 });
 
 const readOrder = readOrderHandlerFactory({

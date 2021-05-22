@@ -5,26 +5,20 @@ import {StoreOrderHandler} from '../orders/store-order';
 import {MutableOrderField, Order} from '../orders/order';
 import {object, string, array} from 'joi';
 import {isSuccess} from '../common/result';
-import {UUID} from '../common/uuid';
-import {ISO8601DateTimeString} from '../common/date-time';
 import {createResponse, errorInternalServerError} from './common';
+import {OrdersFactory} from '../orders/orders-factory';
 
 export interface PostOrderLambdaDependencies {
     readonly storeOrder: StoreOrderHandler;
-    readonly uuid: () => UUID;
-    readonly now: () => ISO8601DateTimeString;
+    readonly ordersFactory: OrdersFactory;
 }
 
-export function postOrderLambdaFactory({storeOrder, uuid, now}: PostOrderLambdaDependencies): APIGatewayProxyHandlerV2 {
+export function postOrderLambdaFactory({storeOrder, ordersFactory}: PostOrderLambdaDependencies): APIGatewayProxyHandlerV2 {
     return async ({body}) => {
         const result = parseJson(body)
         if (!isSuccess(result)) return errorPayloadIsNotJson(body);
         if (!isCreateOrderPayload(result.value)) return errorPayloadIsInvalid(result.value);
-        const order: Order = {
-            id: uuid(),
-            createdWhen: now(),
-            ...result.value
-        };
+        const order = ordersFactory(result.value);
         const createOrderResult = await storeOrder(order);
         if(!isSuccess(createOrderResult)) return errorInternalServerError();
         return successfullyCreatedOrder(order);
