@@ -3,6 +3,7 @@ import {dynamo, getOrderLambda, postOrderLambda} from '../src/lambdas';
 import {Order} from '../src/orders/order';
 import {UUID} from '../src/common/uuid';
 import {ISO8601DateTimeString} from '../src/common/date-time';
+import {stubHandlerParams} from './test-helpers/stubs';
 
 describe('index.ts', () => {
     describe('postOrderLambda', () => {
@@ -56,13 +57,3 @@ describe('index.ts', () => {
         });
     });
 });
-
-function stubHandlerParams(partial: Partial<APIGatewayProxyEventV2> = {}): Parameters<APIGatewayProxyHandlerV2> {
-    return [
-        {...partial},
-        undefined,
-        undefined
-    ] as unknown as Parameters<APIGatewayProxyHandlerV2>;
-}
-
-
