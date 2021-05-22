@@ -3,7 +3,6 @@ import {ISO8601DateTimeString} from '../../src/common/date-time';
 import {UUID} from '../../src/common/uuid';
 import {Order} from '../../src/orders/order';
 import {getOrderLambdaFactory} from '../../src/lambda/get-order-lambda';
-import {APIGatewayProxyResultV2} from 'aws-lambda/trigger/api-gateway-proxy';
 import {stubHandlerParams} from '../test-helpers/stubs';
 import {ReadOrderFailure} from '../../src/orders/read-order';
 
