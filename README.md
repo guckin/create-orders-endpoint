@@ -19,8 +19,7 @@ npm test
 ```
 
 ### TODO
-* e2e testing
-* deeper unit testing coverage <- Stephen
+* e2e testing <- stephen
 * add dynamo read validation
 * rename this repo to `orders-api`
 * hook up dynamo streams
