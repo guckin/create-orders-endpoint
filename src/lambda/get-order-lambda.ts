@@ -29,9 +29,9 @@ function successfullyRetrievedOrder(order: Order): APIGatewayProxyResultV2 {
 
 function errorFailureRetrievingOrder(failure: ReadOrderFailure): APIGatewayProxyResultV2 {
     return {
-        [ReadOrderFailure.NotFound]: errorOrderNotFound(),
-        [ReadOrderFailure.Unknown]: errorInternalServerError()
-    }[failure];
+        [ReadOrderFailure.NotFound]: () => errorOrderNotFound(),
+        [ReadOrderFailure.Unknown]: () => errorInternalServerError()
+    }[failure]();
 }
 
 function errorOrderNotFound(): APIGatewayProxyResultV2 {
