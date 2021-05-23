@@ -19,8 +19,9 @@ npm test
 ```
 
 ### TODO
-* e2e testing <- stephen
-* add dynamo read validation
-* rename this repo to `orders-api`
-* hook up dynamo streams
-* add dlq for 500 errors
+
+-[ ] authentication
+-[ ] hook up dynamo streams
+-[ ] rename this repo to `orders-api`
+-[ ] add dynamo read validation (search `//TODO` in code)
+-[ ] add dlq for 500 errors
