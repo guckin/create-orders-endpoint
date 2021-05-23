@@ -34,6 +34,9 @@
     "collectCoverageFrom": [
       "./src/**/*.ts"
     ],
+    "coveragePathIgnorePatterns": [
+      "./src/lambdas.ts"
+    ],
     "coverageDirectory": "coverage"
   }
 }
