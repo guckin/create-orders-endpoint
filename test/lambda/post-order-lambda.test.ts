@@ -19,6 +19,12 @@ describe('POST /orders lambda', () => {
             })
         },
         {
+            description: 'returns 400 when no body is provided',
+            expectedStatusCode: 400,
+            orderResult: successFrom<void>(undefined),
+            body: undefined
+        },
+        {
             description: 'returns 400 when json is invalid',
             expectedStatusCode: 400,
             orderResult: successFrom<void>(undefined),
