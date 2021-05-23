@@ -24,4 +24,4 @@ npm test
 - [ ] hook up dynamo streams
 - [ ] rename this repo to `orders-api`
 - [ ] add dynamo read validation (search `//TODO` in code)
-- [ ] add dlq/ or monitoring for 500 errors
+- [ ] add dlq/monitoring for 500 errors
