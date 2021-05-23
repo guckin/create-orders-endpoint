@@ -29,7 +29,7 @@ Resources:
       PackageType: Image
       ImageUri: ECR URL
       ImageConfig:
-        Command: ["index.postOrderLambda"]
+        Command: ["lambdas.postOrderLambda"]
       Events:
         Api:
           Type: Api
@@ -53,7 +53,7 @@ Resources:
       PackageType: Image
       ImageUri: ECR URL
       ImageConfig:
-        Command: [ "index.getOrderLambda" ]
+        Command: [ "lambdas.getOrderLambda" ]
       Events:
         Api:
           Type: Api
