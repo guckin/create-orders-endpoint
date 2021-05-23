@@ -33,6 +33,17 @@ describe('GET /orders/{id} lambda', () => {
             id: 'invalid id'
         },
         {
+            description: 'returns 400 when the id is not provided',
+            expectedStatusCode: 400,
+            orderResult: successFrom<Order>({
+                createdWhen: '2021-05-21T15:02:02.190Z' as ISO8601DateTimeString,
+                id: '40fede5c-b775-43ef-8cf0-a747288cfe8b' as UUID,
+                items: [
+                    '62284f54-6a4b-4a4a-b2c1-0597cc0fc1e2' as UUID
+                ]
+            })
+        },
+        {
             description: 'returns 404 when order is not found',
             expectedStatusCode: 404,
             orderResult: failureFrom(ReadOrderFailure.NotFound),
@@ -52,5 +63,5 @@ describe('GET /orders/{id} lambda', () => {
 
             expect(result).toMatchObject({statusCode: expectedStatusCode})
         });
-    })
+    });
 });
