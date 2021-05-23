@@ -20,8 +20,8 @@ npm test
 
 ### TODO
 
--[ ] authentication
--[ ] hook up dynamo streams
--[ ] rename this repo to `orders-api`
--[ ] add dynamo read validation (search `//TODO` in code)
--[ ] add dlq for 500 errors
+- [ ] authentication
+- [ ] hook up dynamo streams
+- [ ] rename this repo to `orders-api`
+- [ ] add dynamo read validation (search `//TODO` in code)
+- [ ] add dlq for 500 errors
