@@ -26,4 +26,5 @@ jobs:
 
       - name: Build
         run: |
+          sam validate
           sam build
