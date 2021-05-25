@@ -11,7 +11,7 @@ export function recordProcessorLambdaFactory({lambda, notifyFunctionArn}: Record
     return async ({Records}) => {
         const notifyDiscordAboutRecord = (record: DynamoDBRecord) => lambda.invoke({
             FunctionName: notifyFunctionArn,
-            Payload: JSON.stringify(record)
+            Payload: JSON.stringify({text: record})
         }).promise()
         const lambdaFunctionInvocations = Records.map(notifyDiscordAboutRecord);
         await Promise.all(lambdaFunctionInvocations);
