@@ -9,11 +9,22 @@ export interface RecordProcessorLambdaDependencies {
 
 export function recordProcessorLambdaFactory({lambda, notifyFunctionArn}: RecordProcessorLambdaDependencies): DynamoDBStreamHandler {
     return async ({Records}) => {
-        const notifyDiscordAboutRecord = (record: DynamoDBRecord) => lambda.invoke({
-            FunctionName: notifyFunctionArn,
-            Payload: JSON.stringify({text: record})
-        }).promise()
+        const notifyDiscordAboutRecord = async (record: DynamoDBRecord) => {
+            const payload = createDiscordMessageFromObject(record);
+            console.log('Sending notification to discord: ', payload);
+            await lambda.invoke({
+                FunctionName: notifyFunctionArn,
+                Payload: payload
+            }).promise();
+        }
         const lambdaFunctionInvocations = Records.map(notifyDiscordAboutRecord);
         await Promise.all(lambdaFunctionInvocations);
     };
+}
+
+
+
+function createDiscordMessageFromObject(obj: object): string {
+    const messageText = `\`\`\`${JSON.stringify(obj)}\`\`\``;
+    return `{"text":"${messageText}"}`;
 }
