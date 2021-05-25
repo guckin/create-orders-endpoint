@@ -11,7 +11,7 @@ export function recordProcessorLambdaFactory({lambda, notifyFunctionArn}: Record
     return async ({Records}) => {
         const notifyDiscordAboutRecord = async (record: DynamoDBRecord) => {
             const payload = createDiscordMessageFromObject(record);
-            console.log('Sending notification to discord: ', payload);
+            console.log('✉️ Sending notification to discord: ', payload);
             await lambda.invoke({
                 FunctionName: notifyFunctionArn,
                 Payload: payload
@@ -26,6 +26,5 @@ export function recordProcessorLambdaFactory({lambda, notifyFunctionArn}: Record
 
 function createDiscordMessageFromObject(obj: object): string {
     const messageText = `\`\`\`${JSON.stringify(obj)}\`\`\``.replace('"', '\"');
-    console.log(`{"text":"${messageText}"}`);
-    return `{"text":"${messageText}"}`;
+    return JSON.stringify({text: messageText});
 }
