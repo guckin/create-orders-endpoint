@@ -7,6 +7,8 @@ import {DocumentClient} from 'aws-sdk/clients/dynamodb';
 import {getOrderLambdaFactory} from './lambda/get-order-lambda';
 import {readOrderHandlerFactory} from './orders/read-order';
 import {ordersFactoryFactory} from './orders/orders-factory';
+import {Lambda} from 'aws-sdk';
+import {recordProcessorLambdaFactory} from './lambda/record-processor-lambda';
 
 export const dynamo = new DocumentClient();
 
@@ -33,3 +35,11 @@ const readOrder = readOrderHandlerFactory({
 });
 
 export const getOrderLambda = getOrderLambdaFactory({readOrder})
+
+const lambdaSdk = new Lambda();
+const notifyFunctionArn = process.env.NOTIFY_FN_ARN ?? '';
+
+export const recordProcessor = recordProcessorLambdaFactory({
+    lambda: lambdaSdk,
+    notifyFunctionArn
+});

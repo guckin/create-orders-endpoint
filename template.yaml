@@ -10,6 +10,7 @@ Globals:
     Timeout: 3
 
 Parameters:
+
   TableName:
     Type: String
     Default: 'orders'
@@ -19,7 +20,13 @@ Parameters:
     AllowedPattern: ^[A-Za-z_]+$
     ConstraintDescription: 'Required. Can be characters and underscore only. No numbers or special characters allowed.'
 
+  NotifyFunctionArn:
+    Type: String
+    Description: Name of the orders table
+    ConstraintDescription: 'Required. A valid Arn for a notify function'
+
 Resources:
+
   CreateOrdersFunction:
     Type: AWS::Serverless::Function
     Properties:
@@ -83,6 +90,31 @@ Resources:
       SSESpecification:
         SSEEnabled: True
       TableName: !Ref TableName
+      StreamSpecification:
+        StreamViewType: NEW_IMAGE
+
+  ProcessDynamoDBStream:
+    Type: AWS::Serverless::Function
+    Properties:
+      PackageType: Image
+      Policies: AWSLambdaDynamoDBExecutionRole
+      ImageUri: ECR URL
+      ImageConfig:
+        Command: [ "lambdas.recordProcessor" ]
+      Events:
+        Stream:
+          Type: DynamoDB
+          Properties:
+            Stream: !GetAtt Table.StreamArn
+            BatchSize: 100
+            StartingPosition: TRIM_HORIZON
+      Environment:
+        Variables:
+          NOTIFY_FN_ARN: !Ref NotifyFunctionArn
+    Metadata:
+      DockerTag: nodejs14.x-v1
+      DockerContext: .
+      Dockerfile: Dockerfile
 
 Outputs:
   CreateOrdersFunction:
