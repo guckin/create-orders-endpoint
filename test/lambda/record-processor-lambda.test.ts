@@ -21,7 +21,7 @@ describe('Record Processor Lambda', () => {
 
         expect(lambda.invoke).toBeCalledWith({
             FunctionName: notifyFunctionArn,
-            Payload: '{text:{"eventName":"INSERT"}}'
+            Payload: '{"text":{"eventName":"INSERT"}}'
         });
     });
 });
