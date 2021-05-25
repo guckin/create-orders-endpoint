@@ -97,7 +97,9 @@ Resources:
     Type: AWS::Serverless::Function
     Properties:
       PackageType: Image
-      Policies: AWSLambdaDynamoDBExecutionRole
+      Policies:
+        - AWSLambdaRole
+        - AWSLambdaDynamoDBExecutionRole
       ImageUri: ECR URL
       ImageConfig:
         Command: [ "lambdas.recordProcessor" ]
