@@ -23,6 +23,6 @@ export function recordProcessorLambdaFactory({lambda, notifyFunctionArn}: Record
 }
 
 function createDiscordMessageFromObject(obj: object): string {
-    const messageText = `\`\`\`${JSON.stringify(obj)}\`\`\``.replace('"', '\"');
+    const messageText = `\`\`\`${JSON.stringify(obj)}\`\`\``;
     return JSON.stringify({text: messageText});
 }
