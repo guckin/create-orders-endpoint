@@ -93,7 +93,7 @@ Resources:
       StreamSpecification:
         StreamViewType: NEW_IMAGE
 
-  ProcessDynamoDBStream:
+  RecordProcessor:
     Type: AWS::Serverless::Function
     Properties:
       PackageType: Image

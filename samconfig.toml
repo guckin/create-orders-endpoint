@@ -12,5 +12,5 @@ parameter_overrides = "TableName=\"orders\" NotifyFunctionArn=\"arn:aws:lambda:u
 image_repositories = [
     "CreateOrdersFunction=084882962555.dkr.ecr.us-west-2.amazonaws.com/create-orders-endpoint",
     "GetOrderFunction=084882962555.dkr.ecr.us-west-2.amazonaws.com/get-orders-endpoint",
-    "ProcessDynamoDBStream=084882962555.dkr.ecr.us-west-2.amazonaws.com/orders-db-stream-processor"
+    "RecordProcessor=084882962555.dkr.ecr.us-west-2.amazonaws.com/orders-db-stream-processor"
 ]
