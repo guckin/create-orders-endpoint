@@ -21,7 +21,11 @@ npm test
 ### TODO
 
 - [ ] authentication
-- [ ] hook up dynamo streams
+- [x] hook up dynamo streams
+- [ ] add `PATCH /orders/{id}`
+- [ ] add `status` to `Order` model
+- [ ] hook up SQS
 - [ ] rename this repo to `orders-api`
-- [ ] add dynamo read validation (search `//TODO` in code)
 - [ ] add dlq/monitoring for 500 errors
+- [ ] add dlq/monitoring for dynamo stream processing errors
+- [ ] add dynamo read validation (search `//TODO` in code)
