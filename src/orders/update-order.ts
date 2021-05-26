@@ -19,6 +19,7 @@ export function updateOrderHandlerFactory({dynamo, tableName}: UpdateOrderHandle
                 ReturnValues: 'ALL_NEW',
                 ...serializeUpdates(updates)
             }).promise();
+            // TODO should validate the order before casting
             return successFrom(Attributes as Order);
         } catch (error) {
             console.error('🚨 ERROR 🚨', '----', error);

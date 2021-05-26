@@ -20,7 +20,7 @@ export function readOrderHandlerFactory({dynamo, tableName}: ReadOrderDependenci
                 TableName: tableName
             }).promise();
             return Item ?
-                // TODO should validate the order before casting;
+                // TODO should validate the order before casting
                 successFrom(Item as Order) :
                 failureFrom(ReadOrderFailure.NotFound);
         } catch (error) {
