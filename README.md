@@ -22,8 +22,8 @@ npm test
 
 - [ ] authentication
 - [x] hook up dynamo streams
-- [ ] add `PATCH /orders/{id}`
-- [ ] add `status` to `Order` model
+- [x] add `PATCH /orders/{id}`
+- [x] add `status` to `Order` model
 - [ ] hook up SQS
 - [ ] rename this repo to `orders-api`
 - [ ] add dlq/monitoring for 500 errors
