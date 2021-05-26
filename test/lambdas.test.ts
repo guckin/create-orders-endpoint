@@ -1,5 +1,5 @@
 import {dynamo, getOrderLambda, postOrderLambda} from '../src/lambdas';
-import {Order} from '../src/orders/order';
+import {Order, OrderStatus} from '../src/orders/order';
 import {UUID} from '../src/common/uuid';
 import {ISO8601DateTimeString} from '../src/common/date-time';
 import {stubHandlerParams} from './test-helpers/stubs';
@@ -36,7 +36,8 @@ describe('index.ts', () => {
                 items: [
                     '40fede5c-b775-43ef-8cf0-a747288cfe8b' as UUID,
                     '5c3c58f2-c015-47fb-a593-26c0d021e444' as UUID
-                ]
+                ],
+                status: OrderStatus.Complete
             };
             dynamo.get = jest.fn(() => {
                 return {

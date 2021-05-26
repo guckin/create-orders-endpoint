@@ -1,6 +1,7 @@
 import {UUID} from "../../src/common/uuid";
 import {ISO8601DateTimeString} from '../../src/common/date-time';
 import {ordersFactoryFactory} from '../../src/orders/orders-factory';
+import {OrderStatus} from '../../src/orders/order';
 
 describe('Orders Factory', () => {
     it('returns an order', () => {
@@ -21,7 +22,8 @@ describe('Orders Factory', () => {
         expect(result).toEqual({
             id,
             createdWhen,
-            items
+            items,
+            status: OrderStatus.Pending
         });
     });
 });

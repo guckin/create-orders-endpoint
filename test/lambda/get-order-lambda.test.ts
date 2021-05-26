@@ -1,7 +1,7 @@
 import {failureFrom, successFrom} from '../../src/common/result';
 import {ISO8601DateTimeString} from '../../src/common/date-time';
 import {UUID} from '../../src/common/uuid';
-import {Order} from '../../src/orders/order';
+import {Order, OrderStatus} from '../../src/orders/order';
 import {getOrderLambdaFactory} from '../../src/lambda/get-order-lambda';
 import {stubHandlerParams} from '../test-helpers/stubs';
 import {ReadOrderFailure} from '../../src/orders/read-order';
@@ -21,7 +21,8 @@ describe('GET /orders/{id} lambda', () => {
                 id: '40fede5c-b775-43ef-8cf0-a747288cfe8b' as UUID,
                 items: [
                     '62284f54-6a4b-4a4a-b2c1-0597cc0fc1e2' as UUID
-                ]
+                ],
+                status: OrderStatus.Complete
             })
         },
         {
@@ -37,7 +38,8 @@ describe('GET /orders/{id} lambda', () => {
                 id: '40fede5c-b775-43ef-8cf0-a747288cfe8b' as UUID,
                 items: [
                     '62284f54-6a4b-4a4a-b2c1-0597cc0fc1e2' as UUID
-                ]
+                ],
+                status: OrderStatus.Complete
             })
         },
         {
@@ -49,7 +51,8 @@ describe('GET /orders/{id} lambda', () => {
                 id: '40fede5c-b775-43ef-8cf0-a747288cfe8b' as UUID,
                 items: [
                     '62284f54-6a4b-4a4a-b2c1-0597cc0fc1e2' as UUID
-                ]
+                ],
+                status: OrderStatus.Complete
             })
         },
         {

@@ -1,5 +1,5 @@
 import {failureFrom, successFrom} from '../../src/common/result';
-import {stubHandlerParams, stubOrder} from '../test-helpers/stubs';
+import {stubHandlerParams, stubNewOrder} from '../test-helpers/stubs';
 import {postOrderLambdaFactory} from '../../src/lambda/post-order-lambda';
 import {StoreOrderFailure} from '../../src/orders/store-order';
 
@@ -52,7 +52,7 @@ describe('POST /orders lambda', () => {
         }
     ].forEach(({description, orderResult, body, expectedStatusCode}) => {
         it(description, async () => {
-            const order = stubOrder();
+            const order = stubNewOrder();
             const result = await postOrderLambdaFactory({
                 storeOrder: jest.fn(() => Promise.resolve(orderResult)),
                 ordersFactory: () => order
