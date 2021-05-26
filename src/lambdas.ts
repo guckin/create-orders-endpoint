@@ -9,6 +9,8 @@ import {readOrderHandlerFactory} from './orders/read-order';
 import {ordersFactoryFactory} from './orders/orders-factory';
 import {Lambda} from 'aws-sdk';
 import {recordProcessorLambdaFactory} from './lambda/record-processor-lambda';
+import {patchOrderLambdaFactory} from './lambda/patch-order-lambda';
+import {updateOrderHandlerFactory} from './orders/update-order';
 
 export const dynamo = new DocumentClient();
 
@@ -34,7 +36,16 @@ const readOrder = readOrderHandlerFactory({
     tableName
 });
 
-export const getOrderLambda = getOrderLambdaFactory({readOrder})
+export const getOrderLambda = getOrderLambdaFactory({readOrder});
+
+const updateOrder = updateOrderHandlerFactory({
+    dynamo,
+    tableName
+});
+
+export const patchOrderLambda = patchOrderLambdaFactory({
+    updateOrder
+});
 
 const lambdaSdk = new Lambda();
 const notifyFunctionArn = process.env.NOTIFY_FN_ARN ?? '';

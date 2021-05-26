@@ -75,6 +75,30 @@ Resources:
       DockerContext: .
       Dockerfile: Dockerfile
 
+  PatchOrderFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: !Ref TableName
+      PackageType: Image
+      ImageUri: ECR URL
+      ImageConfig:
+        Command: [ "lambdas.patchOrderLambda" ]
+      Events:
+        Api:
+          Type: Api
+          Properties:
+            Path: /orders/{id}
+            Method: patch
+      Environment:
+        Variables:
+          TABLE_NAME: !Ref TableName
+    Metadata:
+      DockerTag: nodejs14.x-v1
+      DockerContext: .
+      Dockerfile: Dockerfile
+
   Table:
     Type: AWS::DynamoDB::Table
     Properties:
