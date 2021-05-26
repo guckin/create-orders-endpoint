@@ -18,4 +18,6 @@ export const OrderStatus = {
     Created: 'CREATED',
 } as const;
 
-export type OrderStatus = typeof OrderStatus[keyof typeof OrderStatus];
+export const OrderStatuses = Object.values(OrderStatus);
+
+export type OrderStatus = typeof OrderStatuses[number];

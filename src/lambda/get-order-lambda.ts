@@ -4,7 +4,7 @@ import {ReadOrderFailure, ReadOrderHandler} from '../orders/read-order';
 import {Order} from '../orders/order';
 import {isSuccess} from '../common/result';
 import {isUUID} from '../common/uuid';
-import {createResponse, errorInternalServerError} from './common';
+import {createResponse, errorInternalServerError, errorOrderNotFound, errorOrdersIdInvalid} from './common-responses';
 
 export interface GetOrderLambdaDependencies {
     readonly readOrder: ReadOrderHandler;
@@ -32,23 +32,4 @@ function errorFailureRetrievingOrder(failure: ReadOrderFailure): APIGatewayProxy
         [ReadOrderFailure.NotFound]: () => errorOrderNotFound(),
         [ReadOrderFailure.Unknown]: () => errorInternalServerError()
     }[failure]();
-}
-
-function errorOrderNotFound(): APIGatewayProxyResultV2 {
-    return createResponse({
-        status: 404,
-        json: {
-            message: 'Not Found'
-        }
-    });
-}
-
-function errorOrdersIdInvalid(id: unknown): APIGatewayProxyResultV2 {
-    return createResponse({
-        status: 400,
-        json: {
-            message: 'Order id is invalid. Id must be a UUID',
-            invalidID: id
-        }
-    });
 }
