@@ -13,6 +13,6 @@ export function ordersFactoryFactory({uuid, now}: OrdersFactoryDependencies): Or
         items,
         id: uuid(),
         createdWhen: now(),
-        status: OrderStatus.Pending
+        status: OrderStatus.Created
     });
 }

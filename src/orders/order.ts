@@ -9,12 +9,13 @@ export interface Order {
 }
 
 export type NewOrder = Order & {
-    status: typeof OrderStatus.Pending;
+    status: typeof OrderStatus.Created;
 };
 
 export const OrderStatus = {
-    Complete: 'Complete',
-    Pending: 'Pending'
+    Complete: 'COMPLETE',
+    Pending: 'PENDING',
+    Created: 'CREATED',
 } as const;
 
 export type OrderStatus = typeof OrderStatus[keyof typeof OrderStatus];

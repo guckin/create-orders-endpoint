@@ -30,7 +30,7 @@ export function stubNewOrder(order: Partial<NewOrder> = {}): NewOrder {
         items: [
             '62284f54-6a4b-4a4a-b2c1-0597cc0fc1e2' as UUID
         ],
-        status: OrderStatus.Pending,
+        status: OrderStatus.Created,
         ...order
     };
 }

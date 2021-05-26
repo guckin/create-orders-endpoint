@@ -23,7 +23,7 @@ describe('Orders Factory', () => {
             id,
             createdWhen,
             items,
-            status: OrderStatus.Pending
+            status: OrderStatus.Created
         });
     });
 });
