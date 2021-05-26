@@ -27,7 +27,7 @@ export function patchOrderLambdaFactory({updateOrder}: PatchOrderLambdaDependenc
         if (!isSuccess(jsonParseResult)) return errorPayloadIsNotJson(body);
         if (!payloadIsValid(jsonParseResult.value)) return errorPayloadIsInvalid(jsonParseResult.value);
         const updates = jsonParseResult.value.changes.map(deserializeOrderUpdate);
-        const updateResult = await updateOrder(updates);
+        const updateResult = await updateOrder(id, updates);
         if (!isSuccess(updateResult)) return errorFailureUpdatingOrder(updateResult.error)
         return successfullyUpdatedOrder(updateResult.value);
     };
