@@ -6,5 +6,3 @@ export interface Order {
     readonly createdWhen: ISO8601DateTimeString;
     readonly items: UUID[];
 }
-
-export type MutableOrderField = 'items';
