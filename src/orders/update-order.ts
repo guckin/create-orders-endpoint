@@ -53,13 +53,34 @@ function serializeUpdates(updates: OrderUpdate[]): SerializedUpdate {
 }
 
 function mapToIntermediate(update: OrderUpdate, index: number): UpdateIntermediate<OrderStatus> {
-    const key = `key${index}`;
+    const key = keyFromIndex(index);
     return {
         key,
         expression: `status = :${key}`,
         operation: 'SET',
         value: update.value
     };
+}
+
+export type Digit = '0' | '1' | '2' | '3' | '4' | '5' | '6' | '7' | '8' | '9'
+
+function keyFromIndex(index: number): string {
+    return index.toString().split('').map(encodeDigit).join();
+}
+
+function encodeDigit(num: Digit): string {
+    return {
+        '0': 'a',
+        '1': 'b',
+        '2': 'c',
+        '3': 'b',
+        '4': 'd',
+        '5': 'e',
+        '6': 'f',
+        '7': 'g',
+        '8': 'h',
+        '9': 'i'
+    }[num];
 }
 
 type IntermediateReducer<T> = (prev: T, cur: UpdateIntermediate<OrderStatus>) => T;
