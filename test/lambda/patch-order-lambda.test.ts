@@ -93,6 +93,26 @@ describe('PATCH /orders/{id} lambda', () => {
             })
         },
         {
+            description: 'returns 400 when performing operations on the same path',
+            pathParameters: { id: '71f8b865-cc48-4cbf-a547-83f9aa4e4c6f' },
+            expectedStatusCode: 400,
+            orderResult: successFrom(stubOrder()),
+            body: JSON.stringify({
+                changes: [
+                    {
+                        op: 'replace',
+                        path: '/status',
+                        value: 'PENDING'
+                    },
+                    {
+                        op: 'replace',
+                        path: '/status',
+                        value: 'COMPLETE'
+                    }
+                ]
+            })
+        },
+        {
             description: 'returns 404 when patch resource is not found',
             pathParameters: { id: '71f8b865-cc48-4cbf-a547-83f9aa4e4c6f' },
             expectedStatusCode: 404,

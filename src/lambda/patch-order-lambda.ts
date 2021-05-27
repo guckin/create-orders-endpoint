@@ -55,7 +55,7 @@ function payloadIsValid(value: unknown): value is UpdateOrderPayload {
     const validation = object({
         changes: array().items(
             orderStatusReplaceValidation
-        ).required()
+        ).unique((a, b) => a.path === b.path).required()
     });
     const {error} = validation.validate(value);
     return !error;
