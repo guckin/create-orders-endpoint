@@ -56,16 +56,16 @@ function mapToIntermediate(update: OrderUpdate, index: number): UpdateIntermedia
     const key = keyFromIndex(index);
     return {
         key,
-        expression: `status = :${key}`,
+        expression: `status = ${key}`,
         operation: 'SET',
         value: update.value
     };
 }
 
-export type Digit = '0' | '1' | '2' | '3' | '4' | '5' | '6' | '7' | '8' | '9'
+export type Digit = '0' | '1' | '2' | '3' | '4' | '5' | '6' | '7' | '8' | '9';
 
 function keyFromIndex(index: number): string {
-    return index.toString().split('').map(encodeDigit).join();
+    return `:${index.toString().split('').map(encodeDigit).join()}`;
 }
 
 function encodeDigit(num: Digit): string {

@@ -25,8 +25,8 @@ describe('', () => {
             expectedExpression: {
                 UpdateExpression: 'SET status = :a, status = :b',
                 ExpressionAttributeValues: {
-                    a: 'PENDING',
-                    b: 'COMPLETE'
+                    ':a': 'PENDING',
+                    ':b': 'COMPLETE'
                 }
             },
             expectedResult: successFrom({
@@ -45,7 +45,7 @@ describe('', () => {
             expectedExpression: {
                 UpdateExpression: 'SET status = :a',
                 ExpressionAttributeValues: {
-                    a: 'CREATED'
+                    ':a': 'CREATED'
                 }
             },
             expectedResult: failureFrom(UpdateOrderFailure.UnknownFailure)
