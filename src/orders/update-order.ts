@@ -42,30 +42,33 @@ export const UpdateOrderFailure = {
 
 export type UpdateOrderFailure = typeof UpdateOrderFailure[keyof typeof UpdateOrderFailure];
 
-type SerializedUpdate = Required<Pick<DocumentClient.UpdateItemInput, 'UpdateExpression' | 'ExpressionAttributeValues'>>;
+type SerializedUpdate = Required<Pick<DocumentClient.UpdateItemInput, 'UpdateExpression' | 'ExpressionAttributeValues' | 'ExpressionAttributeNames'>>;
 
 function serializeUpdates(updates: OrderUpdate[]): SerializedUpdate {
     const intermediates = updates.map(mapToIntermediate);
     return {
         UpdateExpression: `SET ${intermediates.reduce(accumulateSetExpressionUpdates, []).join(', ')}`,
-        ExpressionAttributeValues: intermediates.reduce(accumulateAttributeValueMap, {})
+        ExpressionAttributeValues: intermediates.reduce(accumulateAttributeValueMap, {}),
+        ExpressionAttributeNames: intermediates.reduce(accumulateAttributeNameMap, {})
     };
 }
 
-function mapToIntermediate(update: OrderUpdate, index: number): UpdateIntermediate<OrderStatus> {
-    const key = keyFromIndex(index);
+function mapToIntermediate(update: OrderUpdate, index: number): UpdateIntermediate<'status'> {
+    const attributeValueKey = `:${keyFromIndex(index)}` as const;
+    const attributeFieldKey = `#${keyFromIndex(index)}` as const;
     return {
-        key,
-        expression: `status = ${key}`,
         operation: 'SET',
-        value: update.value
+        attributeValueKey,
+        attributeFieldKey,
+        value: update.value,
+        field: 'status'
     };
 }
 
 export type Digit = '0' | '1' | '2' | '3' | '4' | '5' | '6' | '7' | '8' | '9';
 
 function keyFromIndex(index: number): string {
-    return `:${index.toString().split('').map(encodeDigit).join()}`;
+    return `${index.toString().split('').map(encodeDigit).join()}`;
 }
 
 function encodeDigit(num: Digit): string {
@@ -83,19 +86,28 @@ function encodeDigit(num: Digit): string {
     }[num];
 }
 
-type IntermediateReducer<T> = (prev: T, cur: UpdateIntermediate<OrderStatus>) => T;
+type IntermediateReducer<T> = (prev: T, cur: UpdateIntermediate<'status'>) => T;
+
+const accumulateSetExpressionUpdates: IntermediateReducer<string[]> = (prev, curr) => [
+    ...prev,
+    `${curr.attributeFieldKey} = ${curr.attributeValueKey}`
+]
 
 const accumulateAttributeValueMap: IntermediateReducer<DocumentClient.ExpressionAttributeValueMap> = (prev, cur) => ({
     ...prev,
-    [cur.key]: cur.value
+    [cur.attributeValueKey]: cur.value
 });
 
+const accumulateAttributeNameMap: IntermediateReducer<DocumentClient.ExpressionAttributeNameMap> = (prev, cur) => ({
+    ...prev,
+    [cur.attributeFieldKey]: cur.field
+});
 //TODO: Add a conditional once we add new types of expression operations
-const accumulateSetExpressionUpdates: IntermediateReducer<string[]> = (prev, curr) => [...prev, curr.expression]
 
-interface UpdateIntermediate<T> {
-    key: string;
-    expression: string;
+interface UpdateIntermediate<K extends keyof Order> {
     operation: 'SET';
-    value: T;
+    attributeValueKey: `:${string}`;
+    attributeFieldKey: `#${string}`;
+    field: K;
+    value: Order[K];
 }

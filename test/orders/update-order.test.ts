@@ -23,10 +23,14 @@ describe('', () => {
                 }
             }),
             expectedExpression: {
-                UpdateExpression: 'SET status = :a, status = :b',
+                UpdateExpression: 'SET #a = :a, #b = :b',
                 ExpressionAttributeValues: {
                     ':a': 'PENDING',
                     ':b': 'COMPLETE'
+                },
+                ExpressionAttributeNames: {
+                    '#a': 'status',
+                    '#b': 'status'
                 }
             },
             expectedResult: successFrom({
@@ -43,9 +47,12 @@ describe('', () => {
             ],
             updateResult: Promise.reject('Something bad happened'),
             expectedExpression: {
-                UpdateExpression: 'SET status = :a',
+                UpdateExpression: 'SET #a = :a',
                 ExpressionAttributeValues: {
                     ':a': 'CREATED'
+                },
+                ExpressionAttributeNames: {
+                    '#a': 'status'
                 }
             },
             expectedResult: failureFrom(UpdateOrderFailure.UnknownFailure)
