@@ -1,8 +1,7 @@
 {
-  "name": "create-orders-endpoint",
+  "name": "order-api",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "Rest API for Orders",
   "scripts": {
     "build": "tsc",
     "test": "jest",
