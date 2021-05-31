@@ -8,7 +8,7 @@ s3_prefix = "orders-api-prod"
 region = "us-west-2"
 confirm_changeset = true
 capabilities = "CAPABILITY_IAM"
-parameter_overrides = "TableName=\"orders\" NotifyFunctionArn=\"arn:aws:lambda:us-west-2:084882962555:function:notify-discord-webhook-NotifyDiscordFunction-sCPNirpQQlFn\""
+parameter_overrides = "TableName=\"orders-prod\" NotifyFunctionArn=\"arn:aws:lambda:us-west-2:084882962555:function:notify-discord-webhook-NotifyDiscordFunction-sCPNirpQQlFn\""
 image_repositories = [
     "CreateOrdersFunction=084882962555.dkr.ecr.us-west-2.amazonaws.com/create-orders-endpoint",
     "GetOrderFunction=084882962555.dkr.ecr.us-west-2.amazonaws.com/get-orders-endpoint",
