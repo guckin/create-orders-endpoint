@@ -22,6 +22,11 @@ Parameters:
     Description: Name of the orders table
     ConstraintDescription: 'Required. A valid Arn for a notify function'
 
+  OrderStatusUpdateTopicName:
+    Type: String
+    Description: Name of topic for status updates
+    ConstraintDescription: 'Required'
+
 Resources:
 
   CreateOrdersFunction:
@@ -142,7 +147,7 @@ Resources:
   OrderStatusUpdateTopic:
     Type: AWS::SNS::Topic
     Properties:
-      TopicName: "OrderStatusUpdateTopic"
+      TopicName: !Ref OrderStatusUpdateTopicName
 
 Outputs:
   CreateOrdersFunction:
