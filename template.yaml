@@ -142,6 +142,10 @@ Resources:
       DockerContext: .
       Dockerfile: Dockerfile
 
+  OrderStatusUpdateTopic:
+    Type: AWS::SNS::Topic
+    TopicName: "OrderStatusUpdateTopic"
+
 Outputs:
   CreateOrdersFunction:
     Description: "Function ARN"
