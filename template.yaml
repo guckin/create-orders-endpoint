@@ -144,7 +144,8 @@ Resources:
 
   OrderStatusUpdateTopic:
     Type: AWS::SNS::Topic
-    TopicName: "OrderStatusUpdateTopic"
+    Properties:
+      TopicName: "OrderStatusUpdateTopic"
 
 Outputs:
   CreateOrdersFunction:
