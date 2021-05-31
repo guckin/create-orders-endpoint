@@ -2,9 +2,9 @@ version = 0.1
 [default]
 [default.deploy]
 [default.deploy.parameters]
-stack_name = "create-orders-endpoint"
+stack_name = "orders-api-prod"
 s3_bucket = "aws-sam-cli-managed-default-samclisourcebucket-6ge24nirg7k8"
-s3_prefix = "create-orders-endpoint"
+s3_prefix = "orders-api-prod"
 region = "us-west-2"
 confirm_changeset = true
 capabilities = "CAPABILITY_IAM"
