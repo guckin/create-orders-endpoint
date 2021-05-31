@@ -1,6 +1,6 @@
-# Create Orders Endpoint
+# Orders Rest API
 
-Endpoint responsible for creating order resources
+A serverless REST API for a storefront application.
 
 ### Prerequisites
 
@@ -26,6 +26,7 @@ npm test
 - [x] add `status` to `Order` model
 - [ ] hook up SQS
 - [ ] rename this repo to `orders-api`
+- [ ] add endpoint documentation in README
 - [ ] add dlq/monitoring for 500 errors
 - [ ] add dlq/monitoring for dynamo stream processing errors
 - [ ] add dynamo read validation (search `//TODO` in code)
