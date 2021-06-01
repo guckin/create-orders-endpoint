@@ -117,7 +117,7 @@ Resources:
         SSEEnabled: True
       TableName: !Ref TableName
       StreamSpecification:
-        StreamViewType: NEW_IMAGE
+        StreamViewType: NEW_AND_OLD_IMAGES
 
   RecordProcessor:
     Type: AWS::Serverless::Function
