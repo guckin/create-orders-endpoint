@@ -1,6 +1,6 @@
 # Orders Rest API
 
-A serverless REST API for a storefront application.
+A serverless REST API for managing orders in a storefront system.
 
 ### Prerequisites
 
@@ -24,9 +24,11 @@ npm test
 - [x] hook up dynamo streams
 - [x] add `PATCH /orders/{id}`
 - [x] add `status` to `Order` model
-- [ ] hook up SQS
-- [ ] rename this repo to `orders-api`
+- [x] hook up SQS
+- [x] rename this repo to `orders-api`
 - [ ] add endpoint documentation in README
+- [ ] add more description of the system
+- [ ] update and provide arch diagrams
 - [ ] add dlq/monitoring for 500 errors
 - [ ] add dlq/monitoring for dynamo stream processing errors
 - [ ] add dynamo read validation (search `//TODO` in code)
