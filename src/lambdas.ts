@@ -7,7 +7,7 @@ import {DocumentClient} from 'aws-sdk/clients/dynamodb';
 import {getOrderLambdaFactory} from './lambda/get-order-lambda';
 import {readOrderHandlerFactory} from './orders/read-order';
 import {ordersFactoryFactory} from './orders/orders-factory';
-import {Lambda} from 'aws-sdk';
+import {SNS} from 'aws-sdk';
 import {recordProcessorLambdaFactory} from './lambda/record-processor-lambda';
 import {patchOrderLambdaFactory} from './lambda/patch-order-lambda';
 import {updateOrderHandlerFactory} from './orders/update-order';
@@ -47,10 +47,10 @@ export const patchOrderLambda = patchOrderLambdaFactory({
     updateOrder
 });
 
-const lambdaSdk = new Lambda();
-const notifyFunctionArn = process.env.NOTIFY_FN_ARN ?? '';
+const sns = new SNS();
+const orderStatusUpdateTopicArn = process.env.ORDER_STATUS_UPDATE_TOPIC ?? '';
 
 export const recordProcessor = recordProcessorLambdaFactory({
-    lambda: lambdaSdk,
-    notifyFunctionArn
+    sns,
+    orderStatusUpdateTopicArn
 });

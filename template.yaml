@@ -17,11 +17,6 @@ Parameters:
     AllowedPattern: ^[A-Za-z_]+$
     ConstraintDescription: 'Required. Can be characters and underscore only. No numbers or special characters allowed.'
 
-  NotifyFunctionArn:
-    Type: String
-    Description: Name of the orders table
-    ConstraintDescription: 'Required. A valid Arn for a notify function'
-
   OrderStatusUpdateTopicName:
     Type: String
     Description: Name of topic for status updates
@@ -138,7 +133,7 @@ Resources:
             StartingPosition: TRIM_HORIZON
       Environment:
         Variables:
-          NOTIFY_FN_ARN: !Ref NotifyFunctionArn
+          ORDER_STATUS_UPDATE_TOPIC: !GetAtt OrderStatusUpdateTopic.Arn
     Metadata:
       DockerTag: nodejs14.x-v1
       DockerContext: .

@@ -10,7 +10,6 @@ confirm_changeset = true
 capabilities = "CAPABILITY_IAM"
 parameter_overrides = [
     "TableName=orders_prod",
-    "NotifyFunctionArn=arn:aws:lambda:us-west-2:084882962555:function:notify-discord-webhook-NotifyDiscordFunction-sCPNirpQQlFn",
     "OrderStatusUpdateTopicName=order_status_update_topic_prod"
 ]
 image_repositories = [

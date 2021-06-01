@@ -1,28 +1,73 @@
-import {DynamoDBStreamHandler} from 'aws-lambda';
-import {Lambda} from 'aws-sdk';
-import {DynamoDBRecord} from 'aws-lambda/trigger/dynamodb-stream';
+import {AttributeValue, DynamoDBStreamHandler} from 'aws-lambda';
+import {SNS} from 'aws-sdk';
+import {DynamoDBRecord, StreamRecord} from 'aws-lambda/trigger/dynamodb-stream';
+import {object, string} from 'joi';
+import {OrderStatus, OrderStatuses} from '../orders/order';
 
 export interface RecordProcessorLambdaDependencies {
-    lambda: Pick<Lambda, 'invoke'>,
-    notifyFunctionArn: string;
+    sns: Pick<SNS, 'publish'>,
+    orderStatusUpdateTopicArn: string;
 }
 
-export function recordProcessorLambdaFactory({lambda, notifyFunctionArn}: RecordProcessorLambdaDependencies): DynamoDBStreamHandler {
+export function recordProcessorLambdaFactory({
+                                                 sns,
+                                                 orderStatusUpdateTopicArn
+                                             }: RecordProcessorLambdaDependencies): DynamoDBStreamHandler {
     return async ({Records}) => {
-        const notifyDiscordAboutRecord = async (record: DynamoDBRecord) => {
+        const publishRecordsForUpdateStatus = async (record: DynamoDBRecord) => {
             const payload = createDiscordMessageFromObject(record);
-            console.log('✉️ Sending notification to discord: ', payload);
-            await lambda.invoke({
-                FunctionName: notifyFunctionArn,
-                Payload: payload
+            console.log('📰 - Publishing Message: ', payload);
+            await sns.publish({
+                TopicArn: orderStatusUpdateTopicArn,
+                Message: payload,
             }).promise();
-        }
-        const lambdaFunctionInvocations = Records.map(notifyDiscordAboutRecord);
-        await Promise.all(lambdaFunctionInvocations);
+        };
+        const publishedEventsForUpdateStatus = Records
+            .filter(isModifyStatusEvent)
+            .filter(onlyStatusUpdates)
+            .map(publishRecordsForUpdateStatus);
+        await Promise.all(publishedEventsForUpdateStatus);
     };
 }
 
-function createDiscordMessageFromObject(obj: object): string {
-    const messageText = `\`\`\`${JSON.stringify(obj)}\`\`\``;
-    return JSON.stringify({text: messageText});
+function onlyStatusUpdates({dynamodb: {NewImage, OldImage}}: ModifyStatusEvent): boolean {
+    return NewImage.status.S !== OldImage.status.S;
 }
+
+function isModifyStatusEvent(value: unknown): value is ModifyStatusEvent {
+    const imageValidations = object<{ [val: string]: AttributeValue }>({
+        status: object<AttributeValue>({
+            S: string().valid(...OrderStatuses)
+        })
+    }).unknown(true);
+    const validation = object<ModifyStatusEvent>({
+        eventName: string().valid('MODIFY'),
+        dynamodb: object<StreamRecord>({
+            OldImage: imageValidations,
+            NewImage: imageValidations
+        }).unknown(true)
+    }).unknown(true);
+
+    const {error} = validation.validate(value);
+    return !error;
+}
+
+function createDiscordMessageFromObject(obj: object): string {
+    return JSON.stringify(obj);
+}
+
+type ModifyStatusEvent = DynamoDBRecord & {
+    eventName: 'MODIFY',
+    dynamodb: StreamRecord & {
+        OldImage: StreamRecord['OldImage'] & {
+            status: {
+                S: OrderStatus
+            }
+        },
+        NewImage: StreamRecord['NewImage'] & {
+            status: {
+                S: OrderStatus
+            }
+        }
+    }
+};
