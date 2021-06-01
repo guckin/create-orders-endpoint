@@ -133,7 +133,7 @@ Resources:
             StartingPosition: TRIM_HORIZON
       Environment:
         Variables:
-          ORDER_STATUS_UPDATE_TOPIC: !GetAtt OrderStatusUpdateTopic.Arn
+          ORDER_STATUS_UPDATE_TOPIC: !Ref OrderStatusUpdateTopic
     Metadata:
       DockerTag: nodejs14.x-v1
       DockerContext: .
