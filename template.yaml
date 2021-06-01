@@ -119,7 +119,7 @@ Resources:
     Properties:
       PackageType: Image
       Policies:
-        - AWSLambdaRole
+        - AmazonSNSFullAccess
         - AWSLambdaDynamoDBExecutionRole
       ImageUri: ECR URL
       ImageConfig:
