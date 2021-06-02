@@ -13,6 +13,9 @@ describe('lambdas.ts', () => {
         },
         {
             hasLambda: 'recordProcessor'
+        },
+        {
+            hasLambda: 'authorizer'
         }
     ].forEach(({hasLambda}) => {
         it(`exports ${hasLambda}`, () => {

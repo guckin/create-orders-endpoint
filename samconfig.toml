@@ -13,6 +13,7 @@ parameter_overrides = [
     "OrderStatusUpdateTopicName=order_status_update_topic_prod"
 ]
 image_repositories = [
+    "TokenAuthorizerFunction=084882962555.dkr.ecr.us-west-2.amazonaws.com/orders-api-authorizer",
     "CreateOrdersFunction=084882962555.dkr.ecr.us-west-2.amazonaws.com/create-orders-endpoint",
     "GetOrderFunction=084882962555.dkr.ecr.us-west-2.amazonaws.com/get-orders-endpoint",
     "PatchOrderFunction=084882962555.dkr.ecr.us-west-2.amazonaws.com/patch-order-endpoint",

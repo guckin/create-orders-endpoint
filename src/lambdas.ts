@@ -11,6 +11,14 @@ import {SNS} from 'aws-sdk';
 import {recordProcessorLambdaFactory} from './lambda/record-processor-lambda';
 import {patchOrderLambdaFactory} from './lambda/patch-order-lambda';
 import {updateOrderHandlerFactory} from './orders/update-order';
+import {authorizerLambdaFactory} from './lambda/authorizer-lambda';
+import {tokenVerificationFactory} from './auth/token-verification';
+import {verify} from 'jsonwebtoken';
+import {JwksClient} from 'jwks-rsa';
+
+const jwksClient = new JwksClient({jwksUri: 'https://dev--isxkzf0.auth0.com/.well-known/jwks.json'});
+const verifyToken = tokenVerificationFactory({jwksClient, verify});
+export const authorizer = authorizerLambdaFactory({verifyToken})
 
 export const dynamo = new DocumentClient();
 

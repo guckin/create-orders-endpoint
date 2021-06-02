@@ -21,6 +21,9 @@ npm test
 ### TODO
 
 - [ ] authentication
+- [ ] update postman tests 
+- [ ] add tests in `test/auth/token-verification.test.ts`
+- [ ] remove `src/auth/token-verification.test.ts` entry in test exclusions
 - [x] hook up dynamo streams
 - [x] add `PATCH /orders/{id}`
 - [x] add `status` to `Order` model

@@ -24,6 +24,28 @@ Parameters:
 
 Resources:
 
+  OrderAPI:
+    Type: AWS::Serverless::Api
+    Properties:
+      StageName: Prod
+      Auth:
+        DefaultAuthorizer: TokenAuthorizer
+        Authorizers:
+          TokenAuthorizer:
+            FunctionArn: !GetAtt TokenAuthorizerFunction.Arn
+
+  TokenAuthorizerFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      PackageType: Image
+      ImageUri: ECR URL
+      ImageConfig:
+        Command: [ "lambdas.authorizer" ]
+    Metadata:
+      DockerTag: nodejs14.x-v1
+      DockerContext: .
+      Dockerfile: Dockerfile
+
   CreateOrdersFunction:
     Type: AWS::Serverless::Function
     Properties:
@@ -35,9 +57,10 @@ Resources:
       ImageConfig:
         Command: ["lambdas.postOrderLambda"]
       Events:
-        Api:
+        CreateOrder:
           Type: Api
           Properties:
+            RestApiId: !Ref OrderAPI
             Path: /orders
             Method: post
       Environment:
@@ -59,9 +82,10 @@ Resources:
       ImageConfig:
         Command: [ "lambdas.getOrderLambda" ]
       Events:
-        Api:
+        GetOrder:
           Type: Api
           Properties:
+            RestApiId: !Ref OrderAPI
             Path: /orders/{id}
             Method: get
       Environment:
@@ -83,9 +107,10 @@ Resources:
       ImageConfig:
         Command: [ "lambdas.patchOrderLambda" ]
       Events:
-        Api:
+        PatchOrder:
           Type: Api
           Properties:
+            RestApiId: !Ref OrderAPI
             Path: /orders/{id}
             Method: patch
       Environment:
