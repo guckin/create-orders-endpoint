@@ -24,7 +24,7 @@ Parameters:
 
 Resources:
 
-  OrderAPI:
+  OrdersRESTAPI:
     Type: AWS::Serverless::HttpApi
     Properties:
       StageName: Prod
@@ -52,7 +52,7 @@ Resources:
         CreateOrder:
           Type: Api
           Properties:
-            RestApiId: !Ref OrderAPI
+            RestApiId: !Ref OrdersRESTAPI
             Path: /orders
             Method: post
       Environment:
@@ -77,7 +77,7 @@ Resources:
         GetOrder:
           Type: Api
           Properties:
-            RestApiId: !Ref OrderAPI
+            RestApiId: !Ref OrdersRESTAPI
             Path: /orders/{id}
             Method: get
       Environment:
@@ -102,7 +102,7 @@ Resources:
         PatchOrder:
           Type: Api
           Properties:
-            RestApiId: !Ref OrderAPI
+            RestApiId: !Ref OrdersRESTAPI
             Path: /orders/{id}
             Method: patch
       Environment:
