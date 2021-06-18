@@ -32,19 +32,11 @@ Resources:
         DefaultAuthorizer: TokenAuthorizer
         Authorizers:
           TokenAuthorizer:
-            FunctionArn: !GetAtt TokenAuthorizerFunction.Arn
-
-  TokenAuthorizerFunction:
-    Type: AWS::Serverless::Function
-    Properties:
-      PackageType: Image
-      ImageUri: ECR URL
-      ImageConfig:
-        Command: [ "lambdas.authorizer" ]
-    Metadata:
-      DockerTag: nodejs14.x-v1
-      DockerContext: .
-      Dockerfile: Dockerfile
+            IdentitySource: $request.header.Authorization
+            JwtConfiguration:
+              audience:
+                - orders-api-prod
+              issuer: https://dev--isxkzf0.auth0.com
 
   CreateOrdersFunction:
     Type: AWS::Serverless::Function
