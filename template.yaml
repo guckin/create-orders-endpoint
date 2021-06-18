@@ -29,14 +29,14 @@ Resources:
     Properties:
       StageName: Prod
       Auth:
-        DefaultAuthorizer: TokenAuthorizer
         Authorizers:
           TokenAuthorizer:
-            IdentitySource: $request.header.Authorization
+            IdentitySource: "$request.header.Authorization"
             JwtConfiguration:
+              issuer: "https://dev--isxkzf0.auth0.com"
               audience:
                 - orders-api-prod
-              issuer: https://dev--isxkzf0.auth0.com
+        DefaultAuthorizer: TokenAuthorizer
 
   CreateOrdersFunction:
     Type: AWS::Serverless::Function
@@ -50,9 +50,9 @@ Resources:
         Command: ["lambdas.postOrderLambda"]
       Events:
         CreateOrder:
-          Type: Api
+          Type: HttpApi
           Properties:
-            RestApiId: !Ref OrdersRESTAPI
+            RestApiId: OrdersRESTAPI
             Path: /orders
             Method: post
       Environment:
@@ -75,9 +75,9 @@ Resources:
         Command: [ "lambdas.getOrderLambda" ]
       Events:
         GetOrder:
-          Type: Api
+          Type: HttpApi
           Properties:
-            RestApiId: !Ref OrdersRESTAPI
+            RestApiId: OrdersRESTAPI
             Path: /orders/{id}
             Method: get
       Environment:
@@ -100,9 +100,9 @@ Resources:
         Command: [ "lambdas.patchOrderLambda" ]
       Events:
         PatchOrder:
-          Type: Api
+          Type: HttpApi
           Properties:
-            RestApiId: !Ref OrdersRESTAPI
+            RestApiId: OrdersRESTAPI
             Path: /orders/{id}
             Method: patch
       Environment:
