@@ -52,7 +52,7 @@ Resources:
         CreateOrder:
           Type: HttpApi
           Properties:
-            ApiId: OrdersRESTAPI
+            ApiId: !Ref OrdersRESTAPI
             Path: /orders
             Method: post
       Environment:
@@ -77,7 +77,7 @@ Resources:
         GetOrder:
           Type: HttpApi
           Properties:
-            ApiId: OrdersRESTAPI
+            ApiId: !Ref OrdersRESTAPI
             Path: /orders/{id}
             Method: get
       Environment:
@@ -102,7 +102,7 @@ Resources:
         PatchOrder:
           Type: HttpApi
           Properties:
-            ApiId: OrdersRESTAPI
+            ApiId: !Ref OrdersRESTAPI
             Path: /orders/{id}
             Method: patch
       Environment:
