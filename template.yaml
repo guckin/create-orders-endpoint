@@ -33,7 +33,7 @@ Resources:
           TokenAuthorizer:
             IdentitySource: "$request.header.Authorization"
             JwtConfiguration:
-              issuer: "https://dev--isxkzf0.auth0.com"
+              issuer: "https://dev--isxkzf0.auth0.com/"
               audience:
                 - orders-api-prod
         DefaultAuthorizer: TokenAuthorizer
