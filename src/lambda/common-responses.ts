@@ -10,10 +10,10 @@ export function errorInternalServerError(): APIGatewayProxyResultV2 {
     });
 }
 
-export interface Response {
-    readonly json: Json,
-    readonly status: number
-}
+export type Response = {
+    readonly json: Json;
+    readonly status: number;
+};
 
 export function createResponse({json, status}: Response): APIGatewayProxyResultV2 {
     return {

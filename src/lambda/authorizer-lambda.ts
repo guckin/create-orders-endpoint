@@ -6,9 +6,9 @@ import {
 import {TokenVerification} from '../auth/token-verification';
 import {isSuccess} from '../common/result';
 
-export interface AuthorizerLambdaDependencies {
-    verifyToken: TokenVerification;
-}
+export type AuthorizerLambdaDependencies = {
+    readonly verifyToken: TokenVerification;
+};
 
 export function authorizerLambdaFactory({verifyToken}: AuthorizerLambdaDependencies): APIGatewayTokenAuthorizerHandler {
     return async ({methodArn, authorizationToken}: APIGatewayTokenAuthorizerEvent) => {
@@ -37,7 +37,7 @@ function unauthorized(): never {
     throw new Error('Unauthorized');
 }
 
-interface Policy {
-    principalId: string;
-    resourceArn: string;
-}
+type Policy = {
+    readonly principalId: string;
+    readonly resourceArn: string;
+};

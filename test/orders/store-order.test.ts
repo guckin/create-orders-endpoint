@@ -34,9 +34,9 @@ describe('Store Order', () => {
 });
 
 
-interface DynamoMockConfig {
-    fails: boolean;
-}
+type DynamoMockConfig = {
+    readonly fails: boolean;
+};
 
 function createDynamoMock({fails}: DynamoMockConfig): StoreOrderDependencies['dynamo'] {
     return {

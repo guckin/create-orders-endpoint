@@ -3,10 +3,10 @@ import {failureFrom, Result, successFrom} from '../common/result';
 import {UUID} from '../common/uuid';
 import {DocumentClient} from 'aws-sdk/clients/dynamodb';
 
-export interface ReadOrderDependencies {
+export type ReadOrderDependencies = {
     readonly dynamo: Pick<DocumentClient, 'get'>;
     readonly tableName: string;
-}
+};
 
 export type ReadOrderHandler = (id: UUID) => Promise<Result<Order, ReadOrderFailure>>;
 

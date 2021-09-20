@@ -3,10 +3,10 @@ import {Order, OrderStatus} from './order';
 import {failureFrom, Result, successFrom} from '../common/result';
 import {UUID} from '../common/uuid';
 
-export interface UpdateOrderHandlerDependencies {
-    dynamo: Pick<DocumentClient, 'update'>;
-    tableName: string;
-}
+export type UpdateOrderHandlerDependencies = {
+    readonly dynamo: Pick<DocumentClient, 'update'>;
+    readonly tableName: string;
+};
 
 export type UpdateOrderHandler = (id: UUID, updates: OrderUpdate[]) => Promise<Result<Order, UpdateOrderFailure>>;
 
@@ -30,10 +30,10 @@ export function updateOrderHandlerFactory({dynamo, tableName}: UpdateOrderHandle
 
 export type OrderUpdate = OrderStatusUpdate;
 
-export interface OrderStatusUpdate {
-    field: 'status';
-    value: OrderStatus;
-}
+export type OrderStatusUpdate = {
+    readonly field: 'status';
+    readonly value: OrderStatus;
+};
 
 export const UpdateOrderFailure = {
     UnknownFailure: 'UnknownFailure',
@@ -104,10 +104,10 @@ const accumulateAttributeNameMap: IntermediateReducer<DocumentClient.ExpressionA
 });
 //TODO: Add a conditional once we add new types of expression operations
 
-interface UpdateIntermediate<K extends keyof Order> {
+type UpdateIntermediate<K extends keyof Order> = {
     operation: 'SET';
     attributeValueKey: `:${string}`;
     attributeFieldKey: `#${string}`;
     field: K;
     value: Order[K];
-}
+};

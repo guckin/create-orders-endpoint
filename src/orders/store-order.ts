@@ -3,10 +3,10 @@ import {failureFrom, Result, successFrom} from '../common/result';
 import {inspect} from 'util';
 import {DocumentClient} from 'aws-sdk/clients/dynamodb';
 
-export interface StoreOrderDependencies {
+export type StoreOrderDependencies = {
     readonly dynamo: Pick<DocumentClient, 'put'>;
     readonly tableName: string;
-}
+};
 
 export type StoreOrderHandler = (order: Order) => Promise<Result<void, StoreOrderFailure>>;
 

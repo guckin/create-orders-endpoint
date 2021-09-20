@@ -15,9 +15,9 @@ import {isSuccess} from '../common/result';
 import {OrderUpdate, UpdateOrderFailure, UpdateOrderHandler} from '../orders/update-order';
 import {APIGatewayProxyResultV2} from 'aws-lambda/trigger/api-gateway-proxy';
 
-export interface PatchOrderLambdaDependencies {
-    updateOrder: UpdateOrderHandler;
-}
+export type PatchOrderLambdaDependencies = {
+    readonly updateOrder: UpdateOrderHandler;
+};
 
 export function patchOrderLambdaFactory({updateOrder}: PatchOrderLambdaDependencies): APIGatewayProxyHandlerV2 {
     return async ({pathParameters, body}) => {
@@ -33,17 +33,17 @@ export function patchOrderLambdaFactory({updateOrder}: PatchOrderLambdaDependenc
     };
 }
 
-export interface UpdateOrderPayload {
-    changes: OrderPatchJson[]
-}
+export type UpdateOrderPayload = {
+    readonly changes: OrderPatchJson[]
+};
 
 export type OrderPatchJson = OrderStatusReplacePatchJson;
 
-export interface OrderStatusReplacePatchJson {
-    op: 'replace';
-    path: '/status';
-    value: OrderStatus;
-}
+export type OrderStatusReplacePatchJson = {
+    readonly op: 'replace';
+    readonly path: '/status';
+    readonly value: OrderStatus;
+};
 
 const orderStatusReplaceValidation: ObjectSchema<OrderStatusReplacePatchJson> = object({
     op: string().valid('replace').required(),

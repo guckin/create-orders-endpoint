@@ -47,14 +47,14 @@ describe('Read Order', () => {
 });
 
 
-interface DynamoMockConfigSuccess {
-    fails: false;
-    order: Order | undefined;
-}
+type DynamoMockConfigSuccess = {
+    readonly fails: false;
+    readonly order: Order | undefined;
+};
 
-interface DynamoMockConfigFailure {
-    fails: true;
-}
+type DynamoMockConfigFailure = {
+    readonly fails: true;
+};
 
 type DynamoMockConfig = DynamoMockConfigSuccess | DynamoMockConfigFailure;
 

@@ -8,10 +8,10 @@ import {isSuccess} from '../common/result';
 import {createResponse, errorInternalServerError, errorPayloadIsInvalid, errorPayloadIsNotJson} from './common-responses';
 import {OrdersFactory} from '../orders/orders-factory';
 
-export interface PostOrderLambdaDependencies {
+export type PostOrderLambdaDependencies = {
     readonly storeOrder: StoreOrderHandler;
     readonly ordersFactory: OrdersFactory;
-}
+};
 
 export function postOrderLambdaFactory({storeOrder, ordersFactory}: PostOrderLambdaDependencies): APIGatewayProxyHandlerV2 {
     return async ({body}) => {

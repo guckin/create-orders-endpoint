@@ -4,10 +4,10 @@ import {DynamoDBRecord, StreamRecord} from 'aws-lambda/trigger/dynamodb-stream';
 import {object, string} from 'joi';
 import {OrderStatus, OrderStatuses} from '../orders/order';
 
-export interface RecordProcessorLambdaDependencies {
-    sns: Pick<SNS, 'publish'>,
-    orderStatusUpdateTopicArn: string;
-}
+export type RecordProcessorLambdaDependencies = {
+    readonly sns: Pick<SNS, 'publish'>;
+    readonly orderStatusUpdateTopicArn: string;
+};
 
 export function recordProcessorLambdaFactory({
                                                  sns,

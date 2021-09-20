@@ -6,9 +6,9 @@ import {isSuccess} from '../common/result';
 import {isUUID} from '../common/uuid';
 import {createResponse, errorInternalServerError, errorOrderNotFound, errorOrdersIdInvalid} from './common-responses';
 
-export interface GetOrderLambdaDependencies {
+export type GetOrderLambdaDependencies = {
     readonly readOrder: ReadOrderHandler;
-}
+};
 
 export function getOrderLambdaFactory({readOrder}: GetOrderLambdaDependencies): APIGatewayProxyHandlerV2 {
     return async ({pathParameters}) => {

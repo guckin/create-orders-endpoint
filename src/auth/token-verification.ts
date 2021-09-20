@@ -2,9 +2,9 @@ import {GetPublicKeyOrSecret, verify} from 'jsonwebtoken';
 import {failureFrom, Result, successFrom} from '../common/result';
 import {JwksClient} from 'jwks-rsa';
 
-export interface TokenVerificationDependencies {
-    verify: typeof verify;
-    jwksClient: JwksClient;
+export type TokenVerificationDependencies = {
+    readonly verify: typeof verify;
+    readonly jwksClient: JwksClient;
 }
 
 export type TokenVerification = (token: string) => Promise<TokenVerificationResult>;
