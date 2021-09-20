@@ -38,12 +38,10 @@ type DynamoMockConfig = {
     readonly fails: boolean;
 };
 
-function createDynamoMock({fails}: DynamoMockConfig): StoreOrderDependencies['dynamo'] {
-    return {
-        put: jest.fn(() => ({
-            promise: () => fails ?
-                Promise.reject() :
-                Promise.resolve()
-        })) as jest.Mock
-    };
-}
+const createDynamoMock = ({fails}: DynamoMockConfig): StoreOrderDependencies['dynamo'] => ({
+    put: jest.fn(() => ({
+        promise: () => fails ?
+            Promise.reject() :
+            Promise.resolve()
+    })) as jest.Mock
+});

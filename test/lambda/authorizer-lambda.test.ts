@@ -39,13 +39,11 @@ describe('Auth', () => {
         expect(verifyToken).toBeCalledWith('token');
     });
 
-    function apiGatewayTokenAuthorizerHandlerParams(
+    const apiGatewayTokenAuthorizerHandlerParams = (
         event: Omit<APIGatewayTokenAuthorizerEvent, 'type'>
-    ): Parameters<APIGatewayTokenAuthorizerHandler> {
-        return [
-            event,
-            undefined,
-            undefined
-        ] as unknown as Parameters<APIGatewayTokenAuthorizerHandler>;
-    }
+    ): Parameters<APIGatewayTokenAuthorizerHandler> => ([
+        event,
+        undefined,
+        undefined
+    ] as unknown as Parameters<APIGatewayTokenAuthorizerHandler>);
 })

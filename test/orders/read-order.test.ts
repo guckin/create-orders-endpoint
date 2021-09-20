@@ -58,12 +58,10 @@ type DynamoMockConfigFailure = {
 
 type DynamoMockConfig = DynamoMockConfigSuccess | DynamoMockConfigFailure;
 
-function createDynamoMock(config: DynamoMockConfig): ReadOrderDependencies['dynamo'] {
-    return {
-        get: jest.fn(() => ({
-            promise: () => config.fails ?
-                Promise.reject() :
-                Promise.resolve({Item: config.order})
-        })) as jest.Mock
-    };
-}
+const createDynamoMock = (config: DynamoMockConfig): ReadOrderDependencies['dynamo'] => ({
+    get: jest.fn(() => ({
+        promise: () => config.fails ?
+            Promise.reject() :
+            Promise.resolve({Item: config.order})
+    })) as jest.Mock
+});

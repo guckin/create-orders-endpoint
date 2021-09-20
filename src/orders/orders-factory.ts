@@ -8,11 +8,9 @@ export type OrdersFactoryDependencies = {
 };
 export type OrdersFactory = (partialOrder: Pick<Order, 'items'>) => NewOrder;
 
-export function ordersFactoryFactory({uuid, now}: OrdersFactoryDependencies): OrdersFactory {
-    return ({items}) => ({
-        items,
-        id: uuid(),
-        createdWhen: now(),
-        status: OrderStatus.Created
-    });
-}
+export const ordersFactoryFactory = ({uuid, now}: OrdersFactoryDependencies): OrdersFactory => ({items}) => ({
+    items,
+    id: uuid(),
+    createdWhen: now(),
+    status: OrderStatus.Created
+});

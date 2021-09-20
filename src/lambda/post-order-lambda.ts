@@ -13,31 +13,32 @@ export type PostOrderLambdaDependencies = {
     readonly ordersFactory: OrdersFactory;
 };
 
-export function postOrderLambdaFactory({storeOrder, ordersFactory}: PostOrderLambdaDependencies): APIGatewayProxyHandlerV2 {
-    return async ({body}) => {
-        const result = parseJson(body)
-        if (!isSuccess(result)) return errorPayloadIsNotJson(body);
-        if (!isCreateOrderPayload(result.value)) return errorPayloadIsInvalid(result.value);
-        const order = ordersFactory(result.value);
-        const createOrderResult = await storeOrder(order);
-        if(!isSuccess(createOrderResult)) return errorInternalServerError();
-        return successfullyCreatedOrder(order);
-    }
-}
+export const postOrderLambdaFactory = (
+    {
+        storeOrder,
+        ordersFactory
+    }: PostOrderLambdaDependencies
+): APIGatewayProxyHandlerV2 => async ({body}) => {
+    const result = parseJson(body)
+    if (!isSuccess(result)) return errorPayloadIsNotJson(body);
+    if (!isCreateOrderPayload(result.value)) return errorPayloadIsInvalid(result.value);
+    const order = ordersFactory(result.value);
+    const createOrderResult = await storeOrder(order);
+    if (!isSuccess(createOrderResult)) return errorInternalServerError();
+    return successfullyCreatedOrder(order);
+};
 
-function successfullyCreatedOrder(order: Order): APIGatewayProxyResultV2 {
-    return createResponse({
-        status: 201,
-        json: order
-    });
-}
+const successfullyCreatedOrder = (order: Order): APIGatewayProxyResultV2 => createResponse({
+    status: 201,
+    json: order
+});
 
 type CreateOrderPayload = Pick<Order, 'items'>;
 
-function isCreateOrderPayload(payload: unknown): payload is CreateOrderPayload {
+const isCreateOrderPayload = (payload: unknown): payload is CreateOrderPayload => {
     const validation = object({
         items: array().items(string().uuid()).required()
     });
     const {error} = validation.validate(payload);
     return !error;
-}
+};

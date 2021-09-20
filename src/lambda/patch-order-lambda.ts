@@ -19,19 +19,21 @@ export type PatchOrderLambdaDependencies = {
     readonly updateOrder: UpdateOrderHandler;
 };
 
-export function patchOrderLambdaFactory({updateOrder}: PatchOrderLambdaDependencies): APIGatewayProxyHandlerV2 {
-    return async ({pathParameters, body}) => {
-        const id = pathParameters?.id;
-        if(!isUUID(id)) return errorOrdersIdInvalid(id);
-        const jsonParseResult = parseJson(body)
-        if (!isSuccess(jsonParseResult)) return errorPayloadIsNotJson(body);
-        if (!payloadIsValid(jsonParseResult.value)) return errorPayloadIsInvalid(jsonParseResult.value);
-        const updates = jsonParseResult.value.changes.map(deserializeOrderUpdate);
-        const updateResult = await updateOrder(id, updates);
-        if (!isSuccess(updateResult)) return errorFailureUpdatingOrder(updateResult.error)
-        return successfullyUpdatedOrder(updateResult.value);
-    };
-}
+export const patchOrderLambdaFactory = (
+    {
+        updateOrder
+    }: PatchOrderLambdaDependencies
+): APIGatewayProxyHandlerV2 => async ({pathParameters, body}) => {
+    const id = pathParameters?.id;
+    if (!isUUID(id)) return errorOrdersIdInvalid(id);
+    const jsonParseResult = parseJson(body)
+    if (!isSuccess(jsonParseResult)) return errorPayloadIsNotJson(body);
+    if (!payloadIsValid(jsonParseResult.value)) return errorPayloadIsInvalid(jsonParseResult.value);
+    const updates = jsonParseResult.value.changes.map(deserializeOrderUpdate);
+    const updateResult = await updateOrder(id, updates);
+    if (!isSuccess(updateResult)) return errorFailureUpdatingOrder(updateResult.error)
+    return successfullyUpdatedOrder(updateResult.value);
+};
 
 export type UpdateOrderPayload = {
     readonly changes: OrderPatchJson[]
@@ -51,7 +53,7 @@ const orderStatusReplaceValidation: ObjectSchema<OrderStatusReplacePatchJson> = 
     value: string().valid(...OrderStatuses).required()
 });
 
-function payloadIsValid(value: unknown): value is UpdateOrderPayload {
+const payloadIsValid = (value: unknown): value is UpdateOrderPayload => {
     const validation = object({
         changes: array().items(
             orderStatusReplaceValidation
@@ -59,25 +61,19 @@ function payloadIsValid(value: unknown): value is UpdateOrderPayload {
     });
     const {error} = validation.validate(value);
     return !error;
-}
+};
 
-function errorFailureUpdatingOrder(failure: UpdateOrderFailure): APIGatewayProxyResultV2 {
-    return {
-        [UpdateOrderFailure.ItemNotFound]: () => errorOrderNotFound(),
-        [UpdateOrderFailure.UnknownFailure]: () => errorInternalServerError()
-    }[failure]();
-}
+const errorFailureUpdatingOrder = (failure: UpdateOrderFailure): APIGatewayProxyResultV2 => ({
+    [UpdateOrderFailure.ItemNotFound]: () => errorOrderNotFound(),
+    [UpdateOrderFailure.UnknownFailure]: () => errorInternalServerError()
+})[failure]();
 
-function deserializeOrderUpdate({value}: OrderPatchJson): OrderUpdate {
-    return {
-        field: 'status',
-        value
-    };
-}
+const deserializeOrderUpdate = ({value}: OrderPatchJson): OrderUpdate => ({
+    field: 'status',
+    value
+});
 
-function successfullyUpdatedOrder(order: Order): APIGatewayProxyResultV2 {
-    return createResponse({
-        json: order,
-        status: 200
-    });
-}
+const successfullyUpdatedOrder = (order: Order): APIGatewayProxyResultV2 => createResponse({
+    json: order,
+    status: 200
+});

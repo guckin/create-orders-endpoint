@@ -10,25 +10,28 @@ export type ReadOrderDependencies = {
 
 export type ReadOrderHandler = (id: UUID) => Promise<Result<Order, ReadOrderFailure>>;
 
-export function readOrderHandlerFactory({dynamo, tableName}: ReadOrderDependencies): ReadOrderHandler {
-    return async id => {
-        try {
-            const {Item} = await dynamo.get({
-                Key: {
-                    id
-                },
-                TableName: tableName
-            }).promise();
-            return Item ?
-                // TODO should validate the order before casting
-                successFrom(Item as Order) :
-                failureFrom(ReadOrderFailure.NotFound);
-        } catch (error) {
-            console.error('🚨 ERROR 🚨', '----', error);
-            return failureFrom(ReadOrderFailure.Unknown);
-        }
+export const readOrderHandlerFactory = (
+    {
+        dynamo,
+        tableName
+    }: ReadOrderDependencies
+): ReadOrderHandler => async id => {
+    try {
+        const {Item} = await dynamo.get({
+            Key: {
+                id
+            },
+            TableName: tableName
+        }).promise();
+        return Item ?
+            // TODO should validate the order before casting
+            successFrom(Item as Order) :
+            failureFrom(ReadOrderFailure.NotFound);
+    } catch (error) {
+        console.error('🚨 ERROR 🚨', '----', error);
+        return failureFrom(ReadOrderFailure.Unknown);
     }
-}
+};
 
 export const ReadOrderFailure = {
     Unknown: 'Unknown',

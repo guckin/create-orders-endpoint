@@ -10,32 +10,32 @@ export type AuthorizerLambdaDependencies = {
     readonly verifyToken: TokenVerification;
 };
 
-export function authorizerLambdaFactory({verifyToken}: AuthorizerLambdaDependencies): APIGatewayTokenAuthorizerHandler {
-    return async ({methodArn, authorizationToken}: APIGatewayTokenAuthorizerEvent) => {
-        const result = await verifyToken(authorizationToken);
-        return isSuccess(result) ?
-            createPolicyForFunctionInvoke({principalId: 'user', resourceArn: methodArn}) :
-            unauthorized();
-    };
-}
+export const authorizerLambdaFactory = (
+    {
+        verifyToken
+    }: AuthorizerLambdaDependencies
+): APIGatewayTokenAuthorizerHandler => async ({methodArn, authorizationToken}: APIGatewayTokenAuthorizerEvent) => {
+    const result = await verifyToken(authorizationToken);
+    return isSuccess(result) ?
+        createPolicyForFunctionInvoke({principalId: 'user', resourceArn: methodArn}) :
+        unauthorized();
+};
 
-function createPolicyForFunctionInvoke({principalId, resourceArn}: Policy): APIGatewayAuthorizerResult {
-    return {
-        policyDocument: {
-            Version: '2012-10-17',
-            Statement: [{
-                Action: 'execute-api:Invoke',
-                Effect: 'Allow',
-                Resource: resourceArn
-            }]
-        },
-        principalId
-    };
-}
+const createPolicyForFunctionInvoke = ({principalId, resourceArn}: Policy): APIGatewayAuthorizerResult => ({
+    policyDocument: {
+        Version: '2012-10-17',
+        Statement: [{
+            Action: 'execute-api:Invoke',
+            Effect: 'Allow',
+            Resource: resourceArn
+        }]
+    },
+    principalId
+});
 
-function unauthorized(): never {
+const unauthorized = (): never => {
     throw new Error('Unauthorized');
-}
+};
 
 type Policy = {
     readonly principalId: string;

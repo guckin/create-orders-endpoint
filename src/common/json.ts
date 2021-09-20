@@ -1,6 +1,6 @@
 import {failureFrom, Result, successFrom} from './result';
 
-export function parseJson(value: unknown): Result<Json, InvalidJsonError> {
+export const parseJson = (value: unknown): Result<Json, InvalidJsonError> => {
     try {
         return typeof value === 'string' ?
             successFrom(JSON.parse(value)) :
@@ -8,7 +8,7 @@ export function parseJson(value: unknown): Result<Json, InvalidJsonError> {
     } catch (error) {
         return failureFrom(InvalidJsonError);
     }
-}
+};
 
 export type Json = object | Json[];
 

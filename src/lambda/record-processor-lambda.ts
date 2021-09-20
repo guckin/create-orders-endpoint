@@ -9,32 +9,37 @@ export type RecordProcessorLambdaDependencies = {
     readonly orderStatusUpdateTopicArn: string;
 };
 
-export function recordProcessorLambdaFactory({
-                                                 sns,
-                                                 orderStatusUpdateTopicArn
-                                             }: RecordProcessorLambdaDependencies): DynamoDBStreamHandler {
-    return async ({Records}) => {
-        const publishRecordsForUpdateStatus = async (record: DynamoDBRecord) => {
-            const payload = createDiscordMessageFromObject(record);
-            console.log('📰 - Publishing Message: ', payload);
-            await sns.publish({
-                TopicArn: orderStatusUpdateTopicArn,
-                Message: payload,
-            }).promise();
-        };
-        const publishedEventsForUpdateStatus = Records
-            .filter(isModifyStatusEvent)
-            .filter(onlyStatusUpdates)
-            .map(publishRecordsForUpdateStatus);
-        await Promise.all(publishedEventsForUpdateStatus);
+export const recordProcessorLambdaFactory = (
+    {
+         sns,
+         orderStatusUpdateTopicArn
+    }: RecordProcessorLambdaDependencies
+): DynamoDBStreamHandler => async ({Records}) => {
+    const publishRecordsForUpdateStatus = async (record: DynamoDBRecord) => {
+        const payload = createDiscordMessageFromObject(record);
+        console.log('📰 - Publishing Message: ', payload);
+        await sns.publish({
+            TopicArn: orderStatusUpdateTopicArn,
+            Message: payload,
+        }).promise();
     };
-}
+    const publishedEventsForUpdateStatus = Records
+        .filter(isModifyStatusEvent)
+        .filter(onlyStatusUpdates)
+        .map(publishRecordsForUpdateStatus);
+    await Promise.all(publishedEventsForUpdateStatus);
+};
 
-function onlyStatusUpdates({dynamodb: {NewImage, OldImage}}: ModifyStatusEvent): boolean {
-    return NewImage.status.S !== OldImage.status.S;
-}
+const onlyStatusUpdates = (
+    {
+        dynamodb: {
+            NewImage,
+            OldImage
+        }
+    }: ModifyStatusEvent
+): boolean => NewImage.status.S !== OldImage.status.S;
 
-function isModifyStatusEvent(value: unknown): value is ModifyStatusEvent {
+const isModifyStatusEvent = (value: unknown): value is ModifyStatusEvent => {
     const imageValidations = object<{ [val: string]: AttributeValue }>({
         status: object<AttributeValue>({
             S: string().valid(...OrderStatuses)
@@ -50,11 +55,9 @@ function isModifyStatusEvent(value: unknown): value is ModifyStatusEvent {
 
     const {error} = validation.validate(value);
     return !error;
-}
+};
 
-function createDiscordMessageFromObject(obj: object): string {
-    return JSON.stringify(obj);
-}
+const createDiscordMessageFromObject = (obj: object): string => JSON.stringify(obj);
 
 type ModifyStatusEvent = DynamoDBRecord & {
     eventName: 'MODIFY',

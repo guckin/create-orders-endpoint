@@ -10,21 +10,24 @@ export type StoreOrderDependencies = {
 
 export type StoreOrderHandler = (order: Order) => Promise<Result<void, StoreOrderFailure>>;
 
-export function storeOrderHandlerFactory({dynamo, tableName}: StoreOrderDependencies): StoreOrderHandler {
-    return async order => {
-        console.log('Storing Order:', inspect(order, { depth: 50 }));
-        try {
-            await dynamo.put({
-                Item: order,
-                TableName: tableName
-            }).promise();
-            return successFrom(undefined);
-        } catch (error) {
-            console.error('🚨 ERROR 🚨', '----', error);
-            return failureFrom(StoreOrderFailure.Unknown);
-        }
+export const storeOrderHandlerFactory = (
+    {
+        dynamo,
+        tableName
+    }: StoreOrderDependencies
+): StoreOrderHandler => async order => {
+    console.log('Storing Order:', inspect(order, {depth: 50}));
+    try {
+        await dynamo.put({
+            Item: order,
+            TableName: tableName
+        }).promise();
+        return successFrom(undefined);
+    } catch (error) {
+        console.error('🚨 ERROR 🚨', '----', error);
+        return failureFrom(StoreOrderFailure.Unknown);
     }
-}
+};
 
 export const StoreOrderFailure = {
     Unknown: 'Unknown'

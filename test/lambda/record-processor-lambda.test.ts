@@ -88,18 +88,14 @@ describe('Record Processor Lambda', () => {
     });
 });
 
-function getSnsMock(): RecordProcessorLambdaDependencies['sns'] {
-    return {
-        publish: jest.fn(() => ({
-            promise: () => Promise.resolve()
-        })) as jest.Mock
-    };
-}
+const getSnsMock = (): RecordProcessorLambdaDependencies['sns'] => ({
+    publish: jest.fn(() => ({
+        promise: () => Promise.resolve()
+    })) as jest.Mock
+});
 
-function createStubDynamoDBStreamHandlerParams(event: DynamoDBStreamEvent): Parameters<DynamoDBStreamHandler> {
-    return [
-        event,
-        undefined,
-        undefined
-    ] as unknown as Parameters<DynamoDBStreamHandler>;
-}
+const createStubDynamoDBStreamHandlerParams = (event: DynamoDBStreamEvent): Parameters<DynamoDBStreamHandler> => ([
+    event,
+    undefined,
+    undefined
+] as unknown as Parameters<DynamoDBStreamHandler>);
